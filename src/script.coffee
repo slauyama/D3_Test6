@@ -1,7 +1,7 @@
 Function.prototype.debounce = (threshold, execAsap) ->
    func = this
    timeout = 0
-   return debounced = ->
+   return ->
       obj = this
       args = arguments
 
@@ -87,7 +87,7 @@ display = ( data ) ->
    scene.selectAll("material").data(data).transition().duration(1000).delay(500).attr("diffuseColor", (d)-> colorFunc(d))
 
    shapesEnter.append( "box" ).data(data).attr("size", (d) ->
-      d.FloorPlanWidth + " " + (d.FloorPlanHeight - .05) + " " + d.RackUnitHeight)
+      d.FloorPlanWidth + " " + (d.FloorPlanHeight - 0.05) + " " + d.RackUnitHeight)
 
    return
 
@@ -104,7 +104,7 @@ colorFunc = (data) ->
       when "Temperature"
          value = data.HeatDissipationCurrent / data.CoolingMax
 
-   if value < .5
+   if value < 0.5
       r = Math.floor(value * 255)
       g = 200
    else
@@ -148,7 +148,7 @@ gridSetup = (bounds)->
    # Attach a shape to the scene
    # Give it a light grey color with transparency
    shape = scene.append('Transform').append('Shape').attr('id', 'grid')
-   shape.append('Appearance').append('Material').attr('id', 'gridMaterial').attr('diffuseColor', '.8, .8, .8').attr('transparency','1.0')
+   shape.append('Appearance').append('Material').attr('id', 'gridMaterial').attr('diffuseColor', '.8, .8, .8').attr('transparency','.65')
    #pointStr is a string representing connections between coordinates
    pointStr = ""
    #coodStr is a string representing the coordinates
@@ -161,7 +161,7 @@ gridSetup = (bounds)->
    while grid <= Math.roundTo(bounds.boundBox.maxX + bounds.boundWthHgt.maxWidth)
       pointStr += "#{grid} #{Math.roundTo(bounds.boundBox.minY - bounds.boundWthHgt.maxHeight, 2)} -1 #{grid} #{Math.roundTo(bounds.boundBox.maxY + bounds.boundWthHgt.maxHeight, 2)} -1 "
       coodStr += "#{lineset} #{lineset + 1} -1 "
-      grid = Math.roundTo(grid + gridInterval, 2)
+      grid = Math.roundTo(grid + .6, 2)
       lineset += 2
 
    # Horizontal Lines on the Grid
@@ -170,7 +170,7 @@ gridSetup = (bounds)->
    while grid <= Math.roundTo(bounds.boundBox.maxY + bounds.boundWthHgt.maxHeight)
       pointStr += "#{Math.roundTo(bounds.boundBox.minX - bounds.boundWthHgt.maxWidth, 2)} #{grid} -1 #{Math.roundTo(bounds.boundBox.maxX + bounds.boundWthHgt.maxWidth, 2)} #{grid} -1 "
       coodStr += "#{lineset} #{lineset + 1} -1 "
-      grid = Math.roundTo(grid + gridInterval, 2)
+      grid = Math.roundTo(grid + .6, 2)
       lineset += 2
 
    set = shape.append('IndexedLineSet').attr('coordIndex', '#{coodStr}')
@@ -192,5 +192,4 @@ window.onload = ->
       else
          document.getElementById('gridMaterial').transparency = "1.0"
       return
-
    return

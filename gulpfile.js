@@ -8,8 +8,9 @@ var clean = require('gulp-clean'),
 	notify = require('gulp-notify'),
 	rename = require('gulp-rename'),
 	sass = require('gulp-ruby-sass'),
-	uglify = require('gulp-uglify');    
+	uglify = require('gulp-uglify'); 
 
+		gulp-notify	gulp-rename	gulp-ruby-sass gulp-uglify
 // Default task
 gulp.task('default', ['clean'], function() {
     gulp.start('css', 'coffee', 'watch');
