@@ -1,0 +1,39 @@
+<!DOCTYPE html >
+<html >
+	<head>
+		<meta http-equiv="X-UA-Compatible" content="chrome=1" />
+		<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+		<title>d3 x3dom Test 1</title>
+		<script type="text/javascript" src="http://mbostock.github.com/d3/d3.js"></script>
+		<script type="text/javascript" src="http://x3dom.org/x3dom/example/x3dom.js"></script>
+		
+		<link rel="stylesheet" type="text/css" href="css/style.min.css">
+		<link href='http://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css'>
+		<link href='http://fonts.googleapis.com/css?family=Lato:300,400' rel='stylesheet' type='text/css'>
+	</head>
+	<body>
+		<h2>Camera Options:</h2>
+		<div class="formGroup cameraOption">
+			<input type="button" class="button selectedView" value="Top View">
+			<input type="button" class="button" value="Front View">
+			<input type="button" class="button" value="Side View">
+			<input type="button" class="button" value="Back View">
+			<input type="button" class="button" value="Perspective">
+			<!-- Custom View Removed -->
+			<!-- <input type="button" class="button" value="Custom View"> -->
+		</div>
+		<h2>Color Options:</h2>
+		<div class="formGroup colorOption">
+			<input type="button" class="button selectedColor" value="Power">
+			<input type="button" class="button" value="Weight">
+			<input type="button" class="button" value="Temperature">
+		</div>
+		<h2>Other Options:</h2>
+		<div class="formGroup">
+			<label for="gridToggle">Grid: </label>
+			<input type="checkbox" id="gridToggle" class="checkbox" selected="false">
+		</div>
+
+		<script src="lib/main.js"></script>
+	</body>
+</html>

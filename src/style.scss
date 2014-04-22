@@ -1,0 +1,59 @@
+@mixin transition($transition-time: 1s, $transition-property: all, $method: linear) {
+    -webkit-transition: $transition-property $transition-time $method;
+    -moz-transition: $transition-property $transition-time $method;
+    -ms-transition: $transition-property $transition-time $method;
+    -o-transition: $transition-property $transition-time $method;
+    transition: $transition-property $transition-time $method;
+}
+
+@mixin gradiant-color($col1, $col2) {
+	background-image: linear-gradient(to bottom, $col1, $col2);
+	background-image: -o-linear-gradient(bottom, $col1, $col2);
+	background-image: -ms-linear-gradient(bottom, $col1, $col2);
+	background-image: -moz-linear-gradient(bottom, $col1, $col2);
+	background-image: -webkit-linear-gradient(bottom, $col1, $col2);
+}
+
+@mixin gradiant-color-both($col1, $col2) {
+	@include gradiant-color($col1, $col2);
+	
+	&:hover {@include gradiant-color($col2, $col1);}
+}
+
+body {
+	font-family: "Lato" "Open Sans", Arial, sans-serif;
+	font-weight: 300;
+}
+
+x3d { 
+	margin: 5px;
+	display: inline-block;
+
+	canvas {
+		border: 1px solid black;
+	}
+}
+
+.formGroup {
+	margin: 20px;
+
+	.button {
+		@include gradiant-color-both(#dedede, #efefef);
+		display: inline-block;
+		border: 1px solid #999;
+		height: 30px;
+		color: #000;
+		width: 90px;
+	}
+
+	.checkbox {
+		margin: 5px 10px 5px 5px;
+		vertical-align: middle;
+		display: inline-block;
+		@include gradiant-color-both(#dedede, #efefef);
+	}
+
+	.selectedView, .selectedColor {
+		@include gradiant-color-both(#9090cd, #bcbcde);
+	}
+}
