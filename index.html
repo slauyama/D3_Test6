@@ -7,33 +7,62 @@
 		<script type="text/javascript" src="http://mbostock.github.com/d3/d3.js"></script>
 		<script type="text/javascript" src="http://x3dom.org/x3dom/example/x3dom.js"></script>
 		
-		<link rel="stylesheet" type="text/css" href="css/style.min.css">
-		<link href='http://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css'>
+		<link rel="stylesheet" type="text/css" href="css/main.min.css">
 		<link href='http://fonts.googleapis.com/css?family=Lato:300,400' rel='stylesheet' type='text/css'>
 	</head>
 	<body>
-		<h2>Camera Options:</h2>
-		<div class="formGroup cameraOption">
-			<input type="button" class="button selectedView" value="Top View">
-			<input type="button" class="button" value="Front View">
-			<input type="button" class="button" value="Side View">
-			<input type="button" class="button" value="Back View">
-			<input type="button" class="button" value="Perspective">
-			<!-- Custom View Removed -->
-			<!-- <input type="button" class="button" value="Custom View"> -->
+		<div class="optionDiv fltLeft">
+			<h2>Camera Options:</h2>
+			<div class="formGroup cameraOption">
+				<input type="button" class="button selectedView" value="Top View">
+				<input type="button" class="button" value="Front View">
+				<input type="button" class="button" value="Side View">
+				<input type="button" class="button" value="Back View">
+				<input type="button" class="button" value="Perspective">
+				<!-- Custom View Removed -->
+				<!-- <input type="button" class="button" value="Custom View"> -->
+			</div>
+			<h2>Color Options:</h2>
+			<div class="formGroup colorOption">
+				<input type="button" class="button selectedColor" value="Power">
+				<input type="button" class="button" value="Weight">
+				<input type="button" class="button" value="Temperature">
+			</div>
+			<h2>Other Options:</h2>
+			<div class="formGroup">
+				<label for="gridToggle">Grid:</label>
+				<input type="checkbox" id="gridToggle" class="checkbox" checked="true">
+			</div>
 		</div>
-		<h2>Color Options:</h2>
-		<div class="formGroup colorOption">
-			<input type="button" class="button selectedColor" value="Power">
-			<input type="button" class="button" value="Weight">
-			<input type="button" class="button" value="Temperature">
+		<div class="fltClear"></div>
+		<x3d id="x3dElement" class="fltLeft"></x3d>
+		<div id="hoverData">
+			<h2>Rack Information:</h2>
+			<ul class="alignRight fltLeft">
+				<li>Component ID: </li>
+				<li>Name: </li>
+				<li>Power (C/P/M): </li>
+				<li>Temperature (C/P/M): </li>
+				<li>Weight (C/P/M) : </li>
+				<li>Used Units (C/P): </li>
+				<li>Largest Unit Location: </li>
+				<li>Largest Unit Size: </li>
+				<li>Power Actual Derivation: </li>
+			</ul>
+			<ul class="fltRight">
+				<li>&nbsp;1471</li>
+				<li>&nbsp;50M</li>
+				<li>&nbsp;115/0/300</li>
+				<li>&nbsp;16/0/35000</li>
+				<li>&nbsp;16/0/500</li>
+				<li>&nbsp;1/0</li>
+				<li>&nbsp;1</li>
+				<li>&nbsp;41</li>
+				<li>&nbsp;115</li>
+			</ul>
+			<p class="fltClear">*C - Current, P - Planned, M - Max</p>
 		</div>
-		<h2>Other Options:</h2>
-		<div class="formGroup">
-			<label for="gridToggle">Grid: </label>
-			<input type="checkbox" id="gridToggle" class="checkbox" checked="true">
-		</div>
-
-		<script src="lib/main.min.js"></script>
+		
+		<script src="js/main.min.js"></script>
 	</body>
 </html>

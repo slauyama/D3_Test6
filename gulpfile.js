@@ -3,6 +3,7 @@ var gulp = require('gulp');
 var clean = require('gulp-clean'),
 	coffee = require('gulp-coffee'),
 	concat = require('gulp-concat'),
+	concatcss = require('gulp-concat-css'),
 	jshint = require('gulp-jshint'),
 	minifycss = require('gulp-minify-css'),
 	notify = require('gulp-notify'),
@@ -10,15 +11,15 @@ var clean = require('gulp-clean'),
 	sass = require('gulp-ruby-sass'),
 	uglify = require('gulp-uglify'); 
 
-		gulp-notify	gulp-rename	gulp-ruby-sass gulp-uglify
 // Default task
 gulp.task('default', ['clean'], function() {
     gulp.start('css', 'coffee', 'watch');
 });
 
 gulp.task('css', function() {
-	return gulp.src('src/*.scss')
+	return gulp.src('src/css/*.scss')
 		.pipe(sass())
+		.pipe(concatcss('main.css'))
 	    .pipe(gulp.dest('css/'))
 	    .pipe(rename({suffix: '.min'}))
 	    .pipe(minifycss())
@@ -28,15 +29,15 @@ gulp.task('css', function() {
 
 // Scripts
 gulp.task('coffee', function() {
-  	return gulp.src('src/*.coffee')
+  	return gulp.src('src/js/*.coffee')
 		.pipe(concat('main.js'))
 		.pipe(coffee())
 		.pipe(jshint())
 		.pipe(jshint.reporter('default'))
-    	.pipe(gulp.dest('lib/'))
+    	.pipe(gulp.dest('js/'))
     	.pipe(rename({ suffix: '.min' }))
     	.pipe(uglify())
-    	.pipe(gulp.dest('lib'))
+    	.pipe(gulp.dest('js/'))
     	.pipe(notify({ message: 'Coffee task complete' }));
 });
 
@@ -48,6 +49,6 @@ gulp.task('clean', function() {
 
 // Watch .js and .scss files
 gulp.task('watch', function() {
-	gulp.watch('src/*.scss', ['css']);
-	gulp.watch('src/*.coffee', ['coffee']);
+	gulp.watch('src/css/*.scss', ['css']);
+	gulp.watch('src/js/*.coffee', ['coffee']);
 });
