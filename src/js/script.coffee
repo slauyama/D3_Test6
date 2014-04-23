@@ -74,20 +74,18 @@ scene.append("viewpoint").attr("id", "Perspective").attr( "centerOfRotation", "0
 HIGH_NUM = 9007199254740992
 
 display = ( data ) ->
-   shapes = scene.selectAll("transform").data(data)
+   transforms = scene.selectAll('transform').data(data)
 
-   shapesEnter = shapes.enter().append( "transform" ).append( "shape" ).data(data).attr("id", (d)-> d.ComponentID)
+   shapesEnter = transforms.enter().append( 'transform' ).append( 'shape' ).data(data).attr('id', (d)-> d.ComponentID)
 
-   # Enter and update   .attr("scale", (d)-> "1.5 .7 1.8669)"
-   shapes.transition().attr("translation", (d, i) -> 
-      d.XPos + " " + d.YPos + " 0.0")
+   # Enter and update   .attr('scale', (d)-> '1.5 .7 1.8669)'
+   transforms.transition().attr('translation', (d, i) -> d.XPos + ' ' + d.YPos + ' 0.0')
 
-   shapesEnter.append("appearance").append("material")
+   shapesEnter.append('appearance').append('material')
 
-   scene.selectAll("material").data(data).transition().duration(1000).delay(500).attr("diffuseColor", (d)-> colorFunc(d))
+   scene.selectAll('material').data(data).transition().duration(1000).delay(500).attr('diffuseColor', (d)-> colorFunc(d))
 
-   shapesEnter.append( "box" ).data(data).attr("size", (d) ->
-      d.FloorPlanWidth + " " + (d.FloorPlanHeight - 0.05) + " " + d.RackUnitHeight)
+   shapesEnter.append('box').data(data).attr('size', (d) -> d.FloorPlanWidth + ' ' + (d.FloorPlanHeight - 0.05) + ' ' + d.RackUnitHeight)
 
    return
 
@@ -112,6 +110,18 @@ colorFunc = (data) ->
       g = Math.floor((1 - value) * 255)
 
    "#" + ((if r < 16 then "0" else "")) + r.toString(16) + ((if g < 16 then "0" else "")) + g.toString(16) + "00"
+
+rackDataFunc = (data) ->
+   document.getElementById('ComponentID-Data').innerHTML = data.ComponentID
+   document.getElementById('Name-Data').innerHTML = data.Name 
+   document.getElementById('Power-Data').innerHTML = data.PowerCurrent+"/"+data.PowerPlanned+"/"+data.PowerMax
+   document.getElementById('Temperature-Data').innerHTML = data.TemperatureCurrent+"/"+data.TemperaturePlanned+"/"+data.CoolingMax
+   document.getElementById('Weight-Data').innerHTML = data.WeightCurrent+"/"+data.WeightPlanned+"/"+data.WeightMax
+   document.getElementById('UsedUnits-Data').innerHTML = data.UsedUnitsCurrent+"/"+data.UsedUnitsPlanned
+   document.getElementById('UnitLocation-Data').innerHTML = data.LargestUnitLocation
+   document.getElementById('UnitSize-Data').innerHTML = data.LargestUnitSize 
+   document.getElementById('PowerAD-Data').innerHTML = data.PowerActualDerivation
+   return
 
 toggleCamera = ->
    clearAllSelected('selectedView');
@@ -184,6 +194,8 @@ window.onload = ->
 
    #this will turn off movement controls
    #document.getElementById('x3dElement').runtime.noNav()
+   shapes = scene.selectAll('shape').data(data)
+   console.log shapes
 
    # this will toggle the grid transparency 
    document.getElementById('gridToggle').onclick = -> 

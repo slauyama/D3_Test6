@@ -1,5 +1,5 @@
 (function() {
-  var HIGH_NUM, RackInfoConstructor, backDis, bounds, clearAllSelected, colorFunc, data, display, frontDis, gridSetup, optionSetup, scene, sideDis, toggleCamera, toggleColor, topDis, x3d;
+  var HIGH_NUM, RackInfoConstructor, backDis, bounds, clearAllSelected, colorFunc, data, display, frontDis, gridSetup, optionSetup, rackDataFunc, scene, sideDis, toggleCamera, toggleColor, topDis, x3d;
 
   RackInfoConstructor = function(floorPlanID, componentID, name, rackUnitHeight, rackWidth, rackDepth, rackOrientation, xPos, yPos, numberingOrigin, overlappingAllowed, coolingMax, weightMax, powerMax, largestUnitLocation, largestUnitSize, usedUnitsCurrent, usedUnitsPlanned, weightCurrent, weightPlanned, heatDissipationCurrent, heatDissipationPlanned, powerCurrent, powerPlanned, powerActual, powerActualDerivation, floorPlanWidth, floorPlanHeight) {
     var obj;
@@ -233,20 +233,20 @@
   HIGH_NUM = 9007199254740992;
 
   display = function(data) {
-    var shapes, shapesEnter;
-    shapes = scene.selectAll("transform").data(data);
-    shapesEnter = shapes.enter().append("transform").append("shape").data(data).attr("id", function(d) {
+    var shapesEnter, transforms;
+    transforms = scene.selectAll('transform').data(data);
+    shapesEnter = transforms.enter().append('transform').append('shape').data(data).attr('id', function(d) {
       return d.ComponentID;
     });
-    shapes.transition().attr("translation", function(d, i) {
-      return d.XPos + " " + d.YPos + " 0.0";
+    transforms.transition().attr('translation', function(d, i) {
+      return d.XPos + ' ' + d.YPos + ' 0.0';
     });
-    shapesEnter.append("appearance").append("material");
-    scene.selectAll("material").data(data).transition().duration(1000).delay(500).attr("diffuseColor", function(d) {
+    shapesEnter.append('appearance').append('material');
+    scene.selectAll('material').data(data).transition().duration(1000).delay(500).attr('diffuseColor', function(d) {
       return colorFunc(d);
     });
-    shapesEnter.append("box").data(data).attr("size", function(d) {
-      return d.FloorPlanWidth + " " + (d.FloorPlanHeight - 0.05) + " " + d.RackUnitHeight;
+    shapesEnter.append('box').data(data).attr('size', function(d) {
+      return d.FloorPlanWidth + ' ' + (d.FloorPlanHeight - 0.05) + ' ' + d.RackUnitHeight;
     });
   };
 
@@ -276,6 +276,18 @@
       g = Math.floor((1 - value) * 255);
     }
     return "#" + (r < 16 ? "0" : "") + r.toString(16) + (g < 16 ? "0" : "") + g.toString(16) + "00";
+  };
+
+  rackDataFunc = function(data) {
+    document.getElementById('ComponentID-Data').innerHTML = data.ComponentID;
+    document.getElementById('Name-Data').innerHTML = data.Name;
+    document.getElementById('Power-Data').innerHTML = data.PowerCurrent + "/" + data.PowerPlanned + "/" + data.PowerMax;
+    document.getElementById('Temperature-Data').innerHTML = data.TemperatureCurrent + "/" + data.TemperaturePlanned + "/" + data.CoolingMax;
+    document.getElementById('Weight-Data').innerHTML = data.WeightCurrent + "/" + data.WeightPlanned + "/" + data.WeightMax;
+    document.getElementById('UsedUnits-Data').innerHTML = data.UsedUnitsCurrent + "/" + data.UsedUnitsPlanned;
+    document.getElementById('UnitLocation-Data').innerHTML = data.LargestUnitLocation;
+    document.getElementById('UnitSize-Data').innerHTML = data.LargestUnitSize;
+    document.getElementById('PowerAD-Data').innerHTML = data.PowerActualDerivation;
   };
 
   toggleCamera = function() {
@@ -344,7 +356,10 @@
   gridSetup(bounds);
 
   window.onload = function() {
+    var shapes;
     optionSetup();
+    shapes = scene.selectAll('shape').data(data);
+    console.log(shapes);
     document.getElementById('gridToggle').onclick = function() {
       if (document.getElementById('gridMaterial').transparency === "1.0") {
         document.getElementById('gridMaterial').transparency = ".65";
