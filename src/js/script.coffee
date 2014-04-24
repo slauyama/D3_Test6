@@ -70,13 +70,28 @@ scene.append("viewpoint").attr("id", "Back View").attr( "centerOfRotation", "0 0
 scene.append("viewpoint").attr("id", "Perspective").attr( "centerOfRotation", "0 0 0").attr( "position", "#{backDis / 3} #{-sideDis} #{topDis / 3}" ).attr( "orientation", "1.0 0.25 0.25 1.25").attr( "fieldOfView", '0.95')
 # Custom View Removed
 # scene.append("viewpoint").attr("id", "Custom View").attr( "centerOfRotation", "0 0 0").attr( "position", "#{-backDis / 3} #{-sideDis} #{topDis / 3}"  ).attr( "orientation", "1.0 -0.2 -0.1 1.25" ).attr( "fieldOfView", '0.75')
+scene.append("PointLight").attr("on", "TRUE").attr('intensity','1.0').attr('color', '1.0 0.0 0.0').attr('attenuation', '1.0000 0.0000 0.0000').attr('location',"#{sideDis} 0 0").attr('radius','200.0')
 
 HIGH_NUM = 9007199254740992
+
+rackDataFunc = (data) ->
+   # console.log data, "Tests212"
+   document.getElementById('ComponentID-Data').innerHTML = "&nbsp;" + data.ComponentID
+   document.getElementById('Name-Data').innerHTML = "&nbsp;" + data.Name 
+   document.getElementById('Power-Data').innerHTML = "&nbsp;" + data.PowerCurrent+"/"+data.PowerPlanned+"/"+data.PowerMax
+   document.getElementById('Temperature-Data').innerHTML = "&nbsp;" + data.TemperatureCurrent+"/"+data.TemperaturePlanned+"/"+data.CoolingMax
+   document.getElementById('Weight-Data').innerHTML = "&nbsp;" + data.WeightCurrent+"/"+data.WeightPlanned+"/"+data.WeightMax
+   document.getElementById('UsedUnits-Data').innerHTML = "&nbsp;" + data.UsedUnitsCurrent+"/"+data.UsedUnitsPlanned
+   document.getElementById('UnitLocation-Data').innerHTML = "&nbsp;" + data.LargestUnitLocation
+   document.getElementById('UnitSize-Data').innerHTML = "&nbsp;" + data.LargestUnitSize 
+   document.getElementById('PowerAD-Data').innerHTML = "&nbsp;" + data.PowerActualDerivation
+   return
 
 display = ( data ) ->
    transforms = scene.selectAll('transform').data(data)
 
-   shapesEnter = transforms.enter().append( 'transform' ).append( 'shape' ).data(data).attr('id', (d)-> d.ComponentID)
+   shapesEnter = transforms.enter().append( 'transform' ).append( 'shape' ).data(data)
+      .attr('id', (d)-> d.ComponentID).attr('onmouseover', (d)-> rackDataFunc(d))
 
    # Enter and update   .attr('scale', (d)-> '1.5 .7 1.8669)'
    transforms.transition().attr('translation', (d, i) -> d.XPos + ' ' + d.YPos + ' 0.0')
@@ -100,7 +115,7 @@ colorFunc = (data) ->
       when "Weight"
          value = data.WeightCurrent / data.WeightMax
       when "Temperature"
-         value = data.HeatDissipationCurrent / data.CoolingMax
+         value = data.TemperatureCurrent / data.CoolingMax
 
    if value < 0.5
       r = Math.floor(value * 255)
@@ -111,45 +126,36 @@ colorFunc = (data) ->
 
    "#" + ((if r < 16 then "0" else "")) + r.toString(16) + ((if g < 16 then "0" else "")) + g.toString(16) + "00"
 
-rackDataFunc = (data) ->
-   document.getElementById('ComponentID-Data').innerHTML = data.ComponentID
-   document.getElementById('Name-Data').innerHTML = data.Name 
-   document.getElementById('Power-Data').innerHTML = data.PowerCurrent+"/"+data.PowerPlanned+"/"+data.PowerMax
-   document.getElementById('Temperature-Data').innerHTML = data.TemperatureCurrent+"/"+data.TemperaturePlanned+"/"+data.CoolingMax
-   document.getElementById('Weight-Data').innerHTML = data.WeightCurrent+"/"+data.WeightPlanned+"/"+data.WeightMax
-   document.getElementById('UsedUnits-Data').innerHTML = data.UsedUnitsCurrent+"/"+data.UsedUnitsPlanned
-   document.getElementById('UnitLocation-Data').innerHTML = data.LargestUnitLocation
-   document.getElementById('UnitSize-Data').innerHTML = data.LargestUnitSize 
-   document.getElementById('PowerAD-Data').innerHTML = data.PowerActualDerivation
-   return
-
 toggleCamera = ->
-   clearAllSelected('selectedView');
-   @className += " selectedView";
-   document.getElementById(@value).setAttribute('set_bind','true');
+   clearAllSelected('selectedView')
+   @className += " selectedView"
+   document.getElementById(@value).setAttribute('set_bind','true')
    return
 
 toggleColor = ->
-   clearAllSelected('selectedColor');
-   @className += " selectedColor";
+   clearAllSelected('selectedColor')
+   @className += " selectedColor"
    display data
 
 clearAllSelected = (str)->
-   allSelected = document.getElementsByClassName(str);
+   allSelected = document.getElementsByClassName(str)
    while (allSelected.length)
-      allSelected[0].className = "button";
+      allSelected[0].className = "button"
    return
 
 optionSetup = ->
    childColor = document.getElementsByClassName('colorOption')[0].children
    childCamera = document.getElementsByClassName('cameraOption')[0].children
+
    i = 0
 
    while (i < childColor.length || i < childCamera.length)
       if (i < childColor.length)
          childColor[i].onmouseover = toggleColor
+
       if (i < childCamera.length)
          childCamera[i].onmouseover = toggleCamera
+
       i++
    return
 
@@ -194,8 +200,8 @@ window.onload = ->
 
    #this will turn off movement controls
    #document.getElementById('x3dElement').runtime.noNav()
-   shapes = scene.selectAll('shape').data(data)
-   console.log shapes
+
+
 
    # this will toggle the grid transparency 
    document.getElementById('gridToggle').onclick = -> 

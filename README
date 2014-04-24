@@ -8,7 +8,9 @@ Need to use more D3 management
 Want to update animation popping up of boxes
 Live Reload
 Use the minified javascript
+Use Jade
 Test in IE8
+Add light perpendicular to Front
 
 Bugs / Issues
 Weird modifying views. Changing the setting on the views after toggling them around for a bit

@@ -24,8 +24,8 @@
     obj.UsedUnitsPlanned = usedUnitsPlanned;
     obj.WeightCurrent = weightCurrent;
     obj.WeightPlanned = weightPlanned;
-    obj.HeatDissipationCurrent = heatDissipationCurrent;
-    obj.HeatDissipationPlanned = heatDissipationPlanned;
+    obj.TemperatureCurrent = heatDissipationCurrent;
+    obj.TemperaturePlanned = heatDissipationPlanned;
     obj.PowerCurrent = powerCurrent;
     obj.PowerPlanned = powerPlanned;
     obj.PowerActual = powerActual;
@@ -230,13 +230,29 @@
 
   scene.append("viewpoint").attr("id", "Perspective").attr("centerOfRotation", "0 0 0").attr("position", "" + (backDis / 3) + " " + (-sideDis) + " " + (topDis / 3)).attr("orientation", "1.0 0.25 0.25 1.25").attr("fieldOfView", '0.95');
 
+  scene.append("SpotLight").attr("on", "TRUE").attr('intensity', '1.0').attr('color', '1.0 0.0 0.0').attr('direction', '-0.19 -0.98 -0.0').attr('location', "0. " + topDis + " 0").attr('radius', '200.0');
+
   HIGH_NUM = 9007199254740992;
+
+  rackDataFunc = function(data) {
+    document.getElementById('ComponentID-Data').innerHTML = "&nbsp;" + data.ComponentID;
+    document.getElementById('Name-Data').innerHTML = "&nbsp;" + data.Name;
+    document.getElementById('Power-Data').innerHTML = "&nbsp;" + data.PowerCurrent + "/" + data.PowerPlanned + "/" + data.PowerMax;
+    document.getElementById('Temperature-Data').innerHTML = "&nbsp;" + data.TemperatureCurrent + "/" + data.TemperaturePlanned + "/" + data.CoolingMax;
+    document.getElementById('Weight-Data').innerHTML = "&nbsp;" + data.WeightCurrent + "/" + data.WeightPlanned + "/" + data.WeightMax;
+    document.getElementById('UsedUnits-Data').innerHTML = "&nbsp;" + data.UsedUnitsCurrent + "/" + data.UsedUnitsPlanned;
+    document.getElementById('UnitLocation-Data').innerHTML = "&nbsp;" + data.LargestUnitLocation;
+    document.getElementById('UnitSize-Data').innerHTML = "&nbsp;" + data.LargestUnitSize;
+    document.getElementById('PowerAD-Data').innerHTML = "&nbsp;" + data.PowerActualDerivation;
+  };
 
   display = function(data) {
     var shapesEnter, transforms;
     transforms = scene.selectAll('transform').data(data);
     shapesEnter = transforms.enter().append('transform').append('shape').data(data).attr('id', function(d) {
       return d.ComponentID;
+    }).attr('onmouseover', function(d) {
+      return rackDataFunc(d);
     });
     transforms.transition().attr('translation', function(d, i) {
       return d.XPos + ' ' + d.YPos + ' 0.0';
@@ -266,7 +282,7 @@
         value = data.WeightCurrent / data.WeightMax;
         break;
       case "Temperature":
-        value = data.HeatDissipationCurrent / data.CoolingMax;
+        value = data.TemperatureCurrent / data.CoolingMax;
     }
     if (value < 0.5) {
       r = Math.floor(value * 255);
@@ -276,18 +292,6 @@
       g = Math.floor((1 - value) * 255);
     }
     return "#" + (r < 16 ? "0" : "") + r.toString(16) + (g < 16 ? "0" : "") + g.toString(16) + "00";
-  };
-
-  rackDataFunc = function(data) {
-    document.getElementById('ComponentID-Data').innerHTML = data.ComponentID;
-    document.getElementById('Name-Data').innerHTML = data.Name;
-    document.getElementById('Power-Data').innerHTML = data.PowerCurrent + "/" + data.PowerPlanned + "/" + data.PowerMax;
-    document.getElementById('Temperature-Data').innerHTML = data.TemperatureCurrent + "/" + data.TemperaturePlanned + "/" + data.CoolingMax;
-    document.getElementById('Weight-Data').innerHTML = data.WeightCurrent + "/" + data.WeightPlanned + "/" + data.WeightMax;
-    document.getElementById('UsedUnits-Data').innerHTML = data.UsedUnitsCurrent + "/" + data.UsedUnitsPlanned;
-    document.getElementById('UnitLocation-Data').innerHTML = data.LargestUnitLocation;
-    document.getElementById('UnitSize-Data').innerHTML = data.LargestUnitSize;
-    document.getElementById('PowerAD-Data').innerHTML = data.PowerActualDerivation;
   };
 
   toggleCamera = function() {
@@ -356,10 +360,7 @@
   gridSetup(bounds);
 
   window.onload = function() {
-    var shapes;
     optionSetup();
-    shapes = scene.selectAll('shape').data(data);
-    console.log(shapes);
     document.getElementById('gridToggle').onclick = function() {
       if (document.getElementById('gridMaterial').transparency === "1.0") {
         document.getElementById('gridMaterial').transparency = ".65";
