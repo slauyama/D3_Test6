@@ -21,30 +21,19 @@ Function.prototype.debounce = (threshold, execAsap) ->
       
 bounds =
    boundBox:
-      minX: HIGH_NUM
-      maxX: -HIGH_NUM
-      minY: HIGH_NUM
-      maxY: -HIGH_NUM
+      minX: HIGH_NUM, maxX: -HIGH_NUM, minY: HIGH_NUM, maxY: -HIGH_NUM
 
    boundWthHgt:
-      maxWidth: -HIGH_NUM
-      maxHeight: -HIGH_NUM
+      maxWidth: -HIGH_NUM, maxHeight: -HIGH_NUM
 
-   avgInterval: 100
-   
    resetBounds: ->
-      @boundBox.minX = HIGH_NUM
-      @boundBox.maxX = -HIGH_NUM
-      @boundBox.minY = HIGH_NUM
-      @boundBox.maxY = -HIGH_NUM
+      @boundBox.minX = @boundBox.minY = HIGH_NUM
+      @boundBox.maxX = @boundBox.maxY = -HIGH_NUM
 
-      @boundWthHgt.minWidth = HIGH_NUM
-      @boundWthHgt.maxWidth = -HIGH_NUM
-      @boundWthHgt.minHeight = HIGH_NUM
-      @boundWthHgt.maxHeight = -HIGH_NUM
+      @boundWthHgt.maxWidth = @boundWthHgt.maxHeight = -HIGH_NUM
       return
 
-   calculateBounds: (fpID) ->
+   calculateBounds: () ->
       @resetBounds()
       @boundBox.minX = Math.roundTo(d3.min(data, (d) -> d.XPos), 2)
       @boundBox.maxX = Math.roundTo(d3.max(data, (d) -> d.XPos), 2)
@@ -75,23 +64,23 @@ scene.append("PointLight").attr("on", "TRUE").attr('intensity','1.0').attr('colo
 HIGH_NUM = 9007199254740992
 
 rackDataFunc = (data) ->
-   # console.log data, "Tests212"
-   document.getElementById('ComponentID-Data').innerHTML = "&nbsp;" + data.ComponentID
-   document.getElementById('Name-Data').innerHTML = "&nbsp;" + data.Name 
-   document.getElementById('Power-Data').innerHTML = "&nbsp;" + data.PowerCurrent+"/"+data.PowerPlanned+"/"+data.PowerMax
-   document.getElementById('Temperature-Data').innerHTML = "&nbsp;" + data.TemperatureCurrent+"/"+data.TemperaturePlanned+"/"+data.CoolingMax
-   document.getElementById('Weight-Data').innerHTML = "&nbsp;" + data.WeightCurrent+"/"+data.WeightPlanned+"/"+data.WeightMax
-   document.getElementById('UsedUnits-Data').innerHTML = "&nbsp;" + data.UsedUnitsCurrent+"/"+data.UsedUnitsPlanned
-   document.getElementById('UnitLocation-Data').innerHTML = "&nbsp;" + data.LargestUnitLocation
-   document.getElementById('UnitSize-Data').innerHTML = "&nbsp;" + data.LargestUnitSize 
-   document.getElementById('PowerAD-Data').innerHTML = "&nbsp;" + data.PowerActualDerivation
+   # document.getElementById('ComponentID-Data').innerHTML = data.ComponentID
+   # document.getElementById('Name-Data').innerHTML = data.Name 
+   # document.getElementById('Power-Data').innerHTML = data.PowerCurrent+"/"+data.PowerPlanned+"/"+data.PowerMax
+   # document.getElementById('Temperature-Data').innerHTML = data.TemperatureCurrent+"/"+data.TemperaturePlanned+"/"+data.CoolingMax
+   # document.getElementById('Weight-Data').innerHTML = data.WeightCurrent+"/"+data.WeightPlanned+"/"+data.WeightMax
+   # document.getElementById('UsedUnits-Data').innerHTML = data.UsedUnitsCurrent+"/"+data.UsedUnitsPlanned
+   # document.getElementById('UnitLocation-Data').innerHTML = data.LargestUnitLocation
+   # document.getElementById('UnitSize-Data').innerHTML = data.LargestUnitSize 
+   # document.getElementById('PowerAD-Data').innerHTML = data.PowerActualDerivation
+   console.log "justforshure"
    return
 
 display = ( data ) ->
-   transforms = scene.selectAll('transform').data(data)
+   transforms = scene.selectAll('transform').data(data)#, (d) -> d.Name.indexOf("Tile") isnt -1 && d.XPos isnt "NULL" && obj.YPos isnt "NULL" )
 
-   shapesEnter = transforms.enter().append( 'transform' ).append( 'shape' ).data(data)
-      .attr('id', (d)-> d.ComponentID).attr('onmouseover', (d)-> rackDataFunc(d))
+   shapesEnter = transforms.enter().append('transform').append('shape').data(data)
+      .attr('id', (d)-> 'rack'+d.ComponentID).attr('class', 'rack')
 
    # Enter and update   .attr('scale', (d)-> '1.5 .7 1.8669)'
    transforms.transition().attr('translation', (d, i) -> d.XPos + ' ' + d.YPos + ' 0.0')
@@ -149,14 +138,17 @@ optionSetup = ->
 
    i = 0
 
-   while (i < childColor.length || i < childCamera.length)
-      if (i < childColor.length)
-         childColor[i].onmouseover = toggleColor
+   @onmouseover = toggleColor for colorButton in childColor
+   @onmouseover = toggleCamera for cameraButton in childCamera
 
-      if (i < childCamera.length)
-         childCamera[i].onmouseover = toggleCamera
+   # while (i < childColor.length || i < childCamera.length)
+   #    if (i < childColor.length)
+   #       childColor[i].onmouseover = toggleColor
 
-      i++
+   #    if (i < childCamera.length)
+   #       childCamera[i].onmouseover = toggleCamera
+
+   #    i++
    return
 
 gridSetup = (bounds)->
@@ -171,20 +163,23 @@ gridSetup = (bounds)->
    coodStr = ""
    lineset = 0
 
+   gridHeightStart = Math.roundTo(Math.ceil((bounds.boundBox.minY - bounds.boundWthHgt.maxHeight) / 0.6 - 1) * 0.6, 2)
+   gridHeightEnd = Math.roundTo(Math.ceil((bounds.boundBox.maxY + bounds.boundWthHgt.maxHeight) / 0.6 + 1) * 0.6, 2)
+   gridWidthStart = Math.roundTo(Math.ceil((bounds.boundBox.minX - bounds.boundWthHgt.maxWidth) / 0.6 - 1) * 0.6, 2)
+   gridWidthEnd = Math.roundTo(Math.ceil((bounds.boundBox.maxX + bounds.boundWthHgt.maxWidth) / 0.6 + 1) * 0.6, 2)
+
    # Verticle lines on the Grid
-   grid = Math.roundTo(bounds.boundBox.minX - bounds.boundWthHgt.maxWidth, 2)
-   gridInterval = Math.roundTo((bounds.boundBox.maxX + bounds.boundWthHgt.maxWidth + Math.abs(grid)) / 12, 2)
-   while grid <= Math.roundTo(bounds.boundBox.maxX + bounds.boundWthHgt.maxWidth)
-      pointStr += "#{grid} #{Math.roundTo(bounds.boundBox.minY - bounds.boundWthHgt.maxHeight, 2)} -1 #{grid} #{Math.roundTo(bounds.boundBox.maxY + bounds.boundWthHgt.maxHeight, 2)} -1 "
+   grid = gridWidthStart 
+   while grid <= gridWidthEnd
+      pointStr += "#{grid} #{gridHeightStart} -1 #{grid} #{gridHeightEnd} -1 "
       coodStr += "#{lineset} #{lineset + 1} -1 "
       grid = Math.roundTo(grid + 0.6, 2)
       lineset += 2
 
    # Horizontal Lines on the Grid
-   grid = Math.roundTo(bounds.boundBox.minY - bounds.boundWthHgt.maxHeight, 2)
-   gridInterval = Math.roundTo((bounds.boundBox.maxY + bounds.boundWthHgt.maxHeight + Math.abs(grid)) / 12, 2)
-   while grid <= Math.roundTo(bounds.boundBox.maxY + bounds.boundWthHgt.maxHeight)
-      pointStr += "#{Math.roundTo(bounds.boundBox.minX - bounds.boundWthHgt.maxWidth, 2)} #{grid} -1 #{Math.roundTo(bounds.boundBox.maxX + bounds.boundWthHgt.maxWidth, 2)} #{grid} -1 "
+   grid = gridHeightStart
+   while grid <= gridHeightEnd
+      pointStr += "#{gridWidthStart} #{grid} -1 #{gridWidthEnd} #{grid} -1 "
       coodStr += "#{lineset} #{lineset + 1} -1 "
       grid = Math.roundTo(grid + 0.6, 2)
       lineset += 2
@@ -200,8 +195,6 @@ window.onload = ->
 
    #this will turn off movement controls
    #document.getElementById('x3dElement').runtime.noNav()
-
-
 
    # this will toggle the grid transparency 
    document.getElementById('gridToggle').onclick = -> 
