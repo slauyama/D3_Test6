@@ -1,5 +1,5 @@
 (function() {
-  var HIGH_NUM, RackInfoConstructor, backDis, bounds, clearAllSelected, colorFunc, data, display, frontDis, gridSetup, optionSetup, rackDataFunc, scene, sideDis, toggleCamera, toggleColor, topDis, x3d;
+  var HIGH_NUM, RackInfoConstructor, backDis, bounds, clearAllSelected, colorFunc, data, display, frontDis, gridSetup, rackDataFunc, scene, sideDis, toggleCamera, toggleColor, topDis, x3d;
 
   RackInfoConstructor = function(componentID, name, rackUnitHeight, rackWidth, rackDepth, rackOrientation, xPos, yPos, numberingOrigin, overlappingAllowed, coolingMax, weightMax, powerMax, largestUnitLocation, largestUnitSize, usedUnitsCurrent, usedUnitsPlanned, weightCurrent, weightPlanned, heatDissipationCurrent, heatDissipationPlanned, powerCurrent, powerPlanned, powerActual, powerActualDerivation, floorPlanWidth, floorPlanHeight) {
     var obj;
@@ -31,9 +31,7 @@
     obj.PowerActualDerivation = powerActualDerivation;
     obj.FloorPlanWidth = floorPlanWidth / 1000;
     obj.FloorPlanHeight = floorPlanHeight / 1000;
-    if (obj.Name.indexOf("Tile") === -1 && !isNaN(obj.XPos) && !isNaN(obj.YPos)) {
-      return obj;
-    }
+    return obj;
   };
 
   data = [];
@@ -52,7 +50,7 @@
 
   data.push(RackInfoConstructor(1502, "50S", 42, 483, 0, 0, 4250, -1250, 0, 1, 35000, 500, 10000, 1, 42, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1500, 700));
 
-  data.push(RackInfoConstructor(1503, "50T", 42, 483, 0, 0, 4250, -1950, 0, 1, 35000, 500, 10000, 1, 31, 11, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1500, 700));
+  data.push(RackInfoConstructor(1503, "50T Tile", 42, 483, 0, 0, "NULL", -1950, 0, 1, 35000, 500, 10000, 1, 31, 11, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1500, 700));
 
   data.push(RackInfoConstructor(1504, "50U", 42, 483, 0, 0, 4250, -2650, 0, 1, 35000, 500, 10000, 1, 32, 10, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1500, 700));
 
@@ -90,7 +88,7 @@
 
   data.push(RackInfoConstructor(1489, "52P", 42, 483, 0, 0, -1350, 1550, 0, 1, 35000, 500, 10000, 1, 24, 14, 0, 204, 0, 29496, 0, 5700, 0, 5700, 1, 1500, 700));
 
-  data.push(RackInfoConstructor(1490, "52Q", 42, 483, 0, 0, -1350, 850, 0, 1, 35000, 500, 10000, 1, 42, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1500, 700));
+  data.push(RackInfoConstructor(1490, "52Q", 42, 483, 0, 0, -1350, "NULL", 0, 1, 35000, 500, 10000, 1, 42, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1500, 700));
 
   data.push(RackInfoConstructor(1491, "52R", 42, 483, 0, 0, -1350, 150, 0, 1, 35000, 500, 10000, 1, 42, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1500, 700));
 
@@ -100,7 +98,7 @@
 
   data.push(RackInfoConstructor(1511, "52U", 42, 483, 0, 0, -1350, -1950, 0, 1, 35000, 500, 10000, 1, 42, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1500, 700));
 
-  data.push(RackInfoConstructor(1512, "52V", 42, 483, 0, 0, -1350, -2650, 0, 1, 35000, 500, 10000, 1, 28, 10, 0, 161, 0, 24039, 0, 4400, 0, 4400, 1, 1500, 700));
+  data.push(RackInfoConstructor(1512, "52V", 42, 483, 0, 0, "NULL", "NULL", 0, 1, 35000, 500, 10000, 1, 28, 10, 0, 161, 0, 24039, 0, 4400, 0, 4400, 1, 1500, 700));
 
   data.push(RackInfoConstructor(1494, "52W", 42, 483, 0, 0, -1350, -3350, 0, 1, 35000, 500, 10000, 1, 42, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1500, 700));
 
@@ -108,7 +106,7 @@
 
   data.push(RackInfoConstructor(1496, "53M", 42, 483, 0, 0, -4150, 3650, 0, 1, 35000, 500, 10000, 1, 42, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1500, 700));
 
-  data.push(RackInfoConstructor(1497, "53N", 42, 483, 0, 0, -4150, 2950, 0, 1, 35000, 500, 10000, 1, 42, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1500, 700));
+  data.push(RackInfoConstructor(1497, "53N Tile", 42, 483, 0, 0, -4150, 2950, 0, 1, 35000, 500, 10000, 1, 42, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1500, 700));
 
   data.push(RackInfoConstructor(1498, "53O", 42, 483, 0, 0, -4150, 2250, 0, 1, 35000, 500, 10000, 1, 42, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1500, 700));
 
@@ -116,13 +114,21 @@
 
   data.push(RackInfoConstructor(1505, "53Q", 42, 483, 0, 0, -4150, 150, 0, 1, 35000, 500, 10000, 1, 32, 10, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1500, 700));
 
-  data.push(RackInfoConstructor(1506, "53R", 42, 483, 0, 0, -4150, -550, 0, 1, 35000, 500, 10000, 1, 26, 16, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1500, 700));
+  data.push(RackInfoConstructor(1506, "53R", 42, 483, 0, 0, "NULL", -550, 0, 1, 35000, 500, 10000, 1, 26, 16, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1500, 700));
 
   data.push(RackInfoConstructor(1507, "53S", 42, 483, 0, 0, -4150, -1250, 0, 1, 35000, 500, 10000, 1, 42, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1500, 700));
 
   data.push(RackInfoConstructor(1508, "53T", 42, 483, 0, 0, -4150, -1950, 0, 1, 35000, 500, 10000, 1, 30, 12, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1500, 700));
 
   data.push(RackInfoConstructor(1509, "53U", 42, 483, 0, 0, -4150, -2650, 0, 1, 35000, 500, 10000, 1, 32, 10, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1500, 700));
+
+  console.log(data);
+
+  data = data.filter(function(d) {
+    return d.Name.indexOf("Tile") === -1 && !isNaN(d.XPos) && !isNaN(d.YPos);
+  });
+
+  console.log(data);
 
   Math.roundTo = function(num, amount) {
     if (amount == null) {
@@ -202,6 +208,10 @@
   };
 
   bounds.calculateBounds();
+
+  console.log(bounds.boundBox.rangeX, bounds.boundBox.rangeY);
+
+  console.log(bounds.boundBox.maxY - bounds.boundBox.minY);
 
   frontDis = bounds.boundBox.minY - bounds.boundWthHgt.maxHeight - (bounds.boundBox.maxX - bounds.boundBox.minX);
 
@@ -299,21 +309,6 @@
     }
   };
 
-  optionSetup = function() {
-    var cameraButton, childCamera, childColor, colorButton, i, _i, _j, _len, _len1;
-    childColor = document.getElementsByClassName('colorOption')[0].children;
-    childCamera = document.getElementsByClassName('cameraOption')[0].children;
-    i = 0;
-    for (_i = 0, _len = childColor.length; _i < _len; _i++) {
-      colorButton = childColor[_i];
-      this.onmouseover = toggleColor;
-    }
-    for (_j = 0, _len1 = childCamera.length; _j < _len1; _j++) {
-      cameraButton = childCamera[_j];
-      this.onmouseover = toggleCamera;
-    }
-  };
-
   gridSetup = function(bounds) {
     var coodStr, grid, gridHeightEnd, gridHeightStart, gridWidthEnd, gridWidthStart, lineset, pointStr, set, shape;
     shape = scene.append('Transform').append('Shape').attr('id', 'grid');
@@ -346,7 +341,17 @@
   gridSetup(bounds);
 
   window.onload = function() {
-    optionSetup();
+    var cameraButton, colorButton, _i, _j, _len, _len1, _ref, _ref1;
+    _ref = document.getElementsByClassName('colorOption')[0].children;
+    for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+      colorButton = _ref[_i];
+      colorButton.onmouseover = toggleColor;
+    }
+    _ref1 = document.getElementsByClassName('cameraOption')[0].children;
+    for (_j = 0, _len1 = _ref1.length; _j < _len1; _j++) {
+      cameraButton = _ref1[_j];
+      cameraButton.onmouseover = toggleCamera;
+    }
     document.getElementById('gridToggle').onclick = function() {
       if (document.getElementById('gridMaterial').transparency === "1.0") {
         document.getElementById('gridMaterial').transparency = ".65";

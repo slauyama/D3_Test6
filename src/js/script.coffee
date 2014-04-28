@@ -44,6 +44,8 @@ bounds =
       return
 
 bounds.calculateBounds()
+console.log bounds.boundBox.rangeX, bounds.boundBox.rangeY
+console.log bounds.boundBox.maxY - bounds.boundBox.minY
 frontDis = bounds.boundBox.minY - bounds.boundWthHgt.maxHeight - (bounds.boundBox.maxX - bounds.boundBox.minX)
 backDis = -frontDis
 sideDis = bounds.boundBox.maxX + bounds.boundWthHgt.maxWidth + (bounds.boundBox.maxY - bounds.boundBox.minY)
@@ -132,27 +134,7 @@ clearAllSelected = (str)->
       allSelected[0].className = "button"
    return
 
-optionSetup = ->
-   childColor = document.getElementsByClassName('colorOption')[0].children
-   childCamera = document.getElementsByClassName('cameraOption')[0].children
-
-   i = 0
-
-   @onmouseover = toggleColor for colorButton in childColor
-   @onmouseover = toggleCamera for cameraButton in childCamera
-
-   # while (i < childColor.length || i < childCamera.length)
-   #    if (i < childColor.length)
-   #       childColor[i].onmouseover = toggleColor
-
-   #    if (i < childCamera.length)
-   #       childCamera[i].onmouseover = toggleCamera
-
-   #    i++
-   return
-
 gridSetup = (bounds)->
-
    # Attach a shape to the scene
    # Give it a light grey color with transparency
    shape = scene.append('Transform').append('Shape').attr('id', 'grid')
@@ -191,7 +173,9 @@ gridSetup = (bounds)->
 gridSetup(bounds)
 
 window.onload = -> 
-   optionSetup()
+   #options setup. Initializes the button to proper function
+   colorButton.onmouseover = toggleColor for colorButton in document.getElementsByClassName('colorOption')[0].children
+   cameraButton.onmouseover = toggleCamera for cameraButton in document.getElementsByClassName('cameraOption')[0].children
 
    #this will turn off movement controls
    #document.getElementById('x3dElement').runtime.noNav()
