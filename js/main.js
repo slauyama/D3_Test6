@@ -122,13 +122,13 @@
 
   data.push(RackInfoConstructor(1509, "53U", 42, 483, 0, 0, -4150, -2650, 0, 1, 35000, 500, 10000, 1, 32, 10, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1500, 700));
 
-  console.log(data);
+  console.log(data.length);
 
   data = data.filter(function(d) {
-    return d.Name.indexOf("Tile") === -1 && !isNaN(d.XPos) && !isNaN(d.YPos);
+    return d.Name.indexOf("Tile") === -1 && !isNaN(d.XPos) && !isNaN(d.YPos) && !isNaN(d.YPos) && !isNaN(d.FloorPlanWidth) && !isNaN(d.FloorPlanHeight);
   });
 
-  console.log(data);
+  console.log(data.length);
 
   Math.roundTo = function(num, amount) {
     if (amount == null) {
@@ -209,10 +209,6 @@
 
   bounds.calculateBounds();
 
-  console.log(bounds.boundBox.rangeX, bounds.boundBox.rangeY);
-
-  console.log(bounds.boundBox.maxY - bounds.boundBox.minY);
-
   frontDis = bounds.boundBox.minY - bounds.boundWthHgt.maxHeight - (bounds.boundBox.maxX - bounds.boundBox.minX);
 
   backDis = -frontDis;
@@ -257,7 +253,7 @@
       return colorFunc(d);
     });
     shapesEnter.append('box').data(data).attr('size', function(d) {
-      return d.FloorPlanWidth + ' ' + (d.FloorPlanHeight - 0.05) + ' ' + d.RackUnitHeight;
+      return d.FloorPlanWidth + ' ' + (d.FloorPlanHeight - 0.1) + ' ' + d.RackUnitHeight;
     });
   };
 

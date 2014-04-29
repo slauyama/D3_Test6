@@ -44,8 +44,6 @@ bounds =
       return
 
 bounds.calculateBounds()
-console.log bounds.boundBox.rangeX, bounds.boundBox.rangeY
-console.log bounds.boundBox.maxY - bounds.boundBox.minY
 frontDis = bounds.boundBox.minY - bounds.boundWthHgt.maxHeight - (bounds.boundBox.maxX - bounds.boundBox.minX)
 backDis = -frontDis
 sideDis = bounds.boundBox.maxX + bounds.boundWthHgt.maxWidth + (bounds.boundBox.maxY - bounds.boundBox.minY)
@@ -79,19 +77,19 @@ rackDataFunc = (data) ->
    return
 
 display = ( data ) ->
-   transforms = scene.selectAll('transform').data(data)#, (d) -> d.Name.indexOf("Tile") isnt -1 && d.XPos isnt "NULL" && obj.YPos isnt "NULL" )
+   transforms = scene.selectAll('transform').data(data)
 
-   shapesEnter = transforms.enter().append('transform').append('shape').data(data)
-      .attr('id', (d)-> 'rack'+d.ComponentID).attr('class', 'rack')
+   shapesEnter = transforms.enter().append('transform').append('shape').data(data).attr('id', (d)-> 'rack'+d.ComponentID).attr('class', 'rack')
 
-   # Enter and update   .attr('scale', (d)-> '1.5 .7 1.8669)'
+   # scene.selectAll('.rack').onmouseover = rackDataFuncs
+
    transforms.transition().attr('translation', (d, i) -> d.XPos + ' ' + d.YPos + ' 0.0')
 
    shapesEnter.append('appearance').append('material')
 
    scene.selectAll('material').data(data).transition().duration(1000).delay(500).attr('diffuseColor', (d)-> colorFunc(d))
 
-   shapesEnter.append('box').data(data).attr('size', (d) -> d.FloorPlanWidth + ' ' + (d.FloorPlanHeight - 0.05) + ' ' + d.RackUnitHeight)
+   shapesEnter.append('box').data(data).attr('size', (d) -> d.FloorPlanWidth + ' ' + (d.FloorPlanHeight - 0.1) + ' ' + d.RackUnitHeight)
 
    return
 
