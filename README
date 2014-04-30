@@ -5,7 +5,12 @@ It uses coffeescript, d3, x3dom, and sass
 To Do
 Hover over data racks Tool tips view-source:http://www.x3dom.org/x3dom/test/functional/indexedLineSet.html
 Use JSON or CSV as opposed to raw data (consider building conversion for larger sets of data)
-Live Reload
+GulpFile
+	Live Reload
+	Develop on error commands
+Build div for looking at top values of racks
+Put a label on every rack
+Add a filter for the racks
 Need to use more D3 management
 Add light perpendicular to Front
 Want to update animation popping up of boxes
@@ -15,11 +20,11 @@ Test in IE8
 Bugs / Issues
 Weird modifying views. Changing the setting on the views after toggling them around for a bit
 	Cant use debounce. Need to timeout all functions
+Weird Lighting issue on one side of rack
 
 4/30
 Implemented Jade
 Fixed Gulp Clean call to remove .sass-caches
-Removed Test.bat
 Added back up if readings (power, weight, heat) are not numeric
 	Consider no Temp, Weight Power Values
 
@@ -30,7 +35,7 @@ Used more coffeescript
 
 4/21
 Figured out why the last piece of the grid is not working
-Implemented Gulp REtired TEst,bat
+Implemented Gulp / Retired TEst,bat
 Split javascript into different files
 
 4/18
@@ -51,10 +56,10 @@ Added text displays for weight power and temp
 Fixed the scale of the box
 Implelement the correct intervals 
 
-3/17/2014 Done
+3/17/2014
 Generate a bounding box
 Modify dropdown on change to create change within graph
 Change Floor plan id
 
-3/14/2014 Done
+3/14/2014
 Update all floop plan id's at start of load.

@@ -13,20 +13,20 @@ var clean = require('gulp-clean'),
 	uglify = require('gulp-uglify'); 
 
 // Default task
-gulp.task('default', ['clean'], function() {
-    gulp.start('css', 'coffee', 'watch');
+gulp.task('default', function() {
+    gulp.start('sass', 'coffee', 'jade', 'watch');
 });
 
 //CSS
-gulp.task('css', function() {
+gulp.task('sass', function() {
 	return gulp.src('src/css/*.scss')
-		.pipe(sass())
+		.pipe(sass({noCache: true}))
 		.pipe(concatcss('main.css'))
 	    .pipe(gulp.dest('css/'))
 	    .pipe(rename({suffix: '.min'}))
 	    .pipe(minifycss())
 	    .pipe(gulp.dest('css/'))
-	    .pipe(notify({ message: 'CSS task complete' }));
+	    .pipe(notify({ message: 'Sass task complete' }));
 });
 
 // Scripts
@@ -43,25 +43,37 @@ gulp.task('coffee', function() {
     	.pipe(notify({ message: 'Coffee task complete' }));
 });
 
-// Scripts
+// HTML
 gulp.task('jade', function() {
-  	return gulp.src('src/html/*.jade')
+	gulp.start('jadePretty', 'jadeUgly');
+  	
+});
+
+// Hack for creating uglify and beautify html
+gulp.task('jadePretty', function() {
+	return gulp.src('src/html/*.jade')
 		.pipe(jade({pretty:true}))
     	.pipe(gulp.dest(''))
+    	.pipe(notify({ message: 'Jade Pretty complete' }));
+});
+
+gulp.task('jadeUgly', function() {
+	return gulp.src('src/html/*.jade')
+		.pipe(jade({pretty:false}))
     	.pipe(rename({ suffix: '.min' }))
     	.pipe(gulp.dest(''))
-    	.pipe(notify({ message: 'Jade task complete' }));
+    	.pipe(notify({ message: 'Jade Ugly complete' }));
 });
 
 // Clean
 gulp.task('clean', function() {
-  	return gulp.src(['css', 'js', '.sass-cache'], {read: false})
+  	return gulp.src(['css', 'js'], {read: false})
     	.pipe(clean());
 });
 
 // Watch .js, .scss, and .jade files
 gulp.task('watch', function() {
-	gulp.watch('src/css/*.scss', ['css']);
+	gulp.watch('src/css/*.scss', ['sass']);
 	gulp.watch('src/js/*.coffee', ['coffee']);
 	gulp.watch('src/html/*.jade', ['jade']);
 });
