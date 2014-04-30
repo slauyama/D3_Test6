@@ -11,3 +11,7 @@ console.logDate = ->
    if arguments.length
       timestamp = '[' + new Date().toUTCString() + '] '
       console.log(timestamp, arguments)
+
+#Returns if a value is a number or not
+isNumber = (n) ->
+	!isNaN(parseFloat(n)) && isFinite(n)

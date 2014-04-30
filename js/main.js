@@ -1,5 +1,5 @@
 (function() {
-  var HIGH_NUM, RackInfoConstructor, backDis, bounds, clearAllSelected, colorFunc, data, display, frontDis, gridSetup, rackDataFunc, scene, sideDis, toggleCamera, toggleColor, topDis, x3d;
+  var HIGH_NUM, RackInfoConstructor, backDis, bounds, clearAllSelected, colorFunc, data, display, frontDis, gridSetup, isNumber, rackDataFunc, scene, sideDis, toggleCamera, toggleColor, topDis, x3d;
 
   RackInfoConstructor = function(componentID, name, rackUnitHeight, rackWidth, rackDepth, rackOrientation, xPos, yPos, numberingOrigin, overlappingAllowed, coolingMax, weightMax, powerMax, largestUnitLocation, largestUnitSize, usedUnitsCurrent, usedUnitsPlanned, weightCurrent, weightPlanned, heatDissipationCurrent, heatDissipationPlanned, powerCurrent, powerPlanned, powerActual, powerActualDerivation, floorPlanWidth, floorPlanHeight) {
     var obj;
@@ -36,7 +36,7 @@
 
   data = [];
 
-  data.push(RackInfoConstructor(1470, "50M", 42, 483, 0, 0, 4250, 3650, 0, 1, 35000, 500, 300, 1, 41, 1, 0, 16, 0, 102, 0, 115, 0, 115, 1, 1500, 700));
+  data.push(RackInfoConstructor(1470, "50M", 42, 483, 0, 0, 4250, 3650, 0, 1, 35000, 500, "NULL", 1, 41, 1, 0, 16, 0, 102, 0, "NULL", 0, 115, 1, 1500, 700));
 
   data.push(RackInfoConstructor(1471, "50N", 42, 483, 0, 0, 4250, 2950, 0, 1, 35000, 500, 300, 1, 35, 5, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1500, 700));
 
@@ -143,6 +143,10 @@
       timestamp = '[' + new Date().toUTCString() + '] ';
       return console.log(timestamp, arguments);
     }
+  };
+
+  isNumber = function(n) {
+    return !isNaN(parseFloat(n)) && isFinite(n);
   };
 
   Function.prototype.debounce = function(threshold, execAsap) {
@@ -267,13 +271,19 @@
     var g, r, value;
     switch (document.getElementsByClassName('selectedColor')[0].value) {
       case "Power":
-        value = data.PowerCurrent / data.PowerMax;
+        value = isNumber(data.PowerCurrent / data.PowerMax) ? data.PowerCurrent / data.PowerMax : "steelblue";
         break;
       case "Weight":
-        value = data.WeightCurrent / data.WeightMax;
+        value = isNumber(data.WeightCurrent / data.WeightMax) ? data.WeightCurrent / data.WeightMax : "steelblue";
         break;
       case "Temperature":
-        value = data.TemperatureCurrent / data.CoolingMax;
+        value = isNumber(data.TemperatureCurrent / data.CoolingMax) ? data.TemperatureCurrent / data.CoolingMax : "steelblue";
+        break;
+      default:
+        value = "steelblue";
+    }
+    if (value === "steelblue") {
+      return "steelblue";
     }
     if (value < 0.5) {
       r = Math.floor(value * 255);

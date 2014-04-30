@@ -18,6 +18,9 @@ Bugs / Issues
 Weird modifying views. Changing the setting on the views after toggling them around for a bit
 	Cant use debounce. Need to timeout all functions
 
+4/30
+
+
 4/28
 Made Grid Percise and scaleable
 Views work for different sacles
@@ -25,7 +28,7 @@ Used more coffeescript
 
 4/21
 Figured out why the last piece of the grid is not working
-Implemented Gulp
+Implemented Gulp REtired TEst,bat
 Split javascript into different files
 
 4/18

@@ -100,12 +100,17 @@ setInterval (-> display data), 10000
 colorFunc = (data) ->
    switch document.getElementsByClassName('selectedColor')[0].value
       when "Power"
-         value = data.PowerCurrent / data.PowerMax
+            value = if isNumber(data.PowerCurrent / data.PowerMax) then data.PowerCurrent / data.PowerMax else "steelblue"
       when "Weight"
-         value = data.WeightCurrent / data.WeightMax
+         value = if isNumber(data.WeightCurrent / data.WeightMax) then data.WeightCurrent / data.WeightMax else "steelblue"
       when "Temperature"
-         value = data.TemperatureCurrent / data.CoolingMax
+         value = if isNumber(data.TemperatureCurrent / data.CoolingMax) then data.TemperatureCurrent / data.CoolingMax else "steelblue"
+      else
+         value = "steelblue"
 
+   if value is "steelblue"
+      return "steelblue"
+   
    if value < 0.5
       r = Math.floor(value * 255)
       g = 200

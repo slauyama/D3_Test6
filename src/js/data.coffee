@@ -82,7 +82,8 @@ data = []
 # data.push(RackInfoConstructor(1509, "53U", 42, 483, 0, 0, -4150, -2650, 0, 1, 35000, 500, 10000, 1,  32, 10, 0, 0,     0,   0,     0, 0,     0, 0,    1, 1500, 700))
 
 # Configured Data
-data.push(RackInfoConstructor(1470, "50M", 42, 483, 0, 0, 4250,   3650, 0, 1, 35000, 500, 300,   1,  41, 1,  0, 16,    0,   102,   0, 115,   0, 115,  1, 1500, 700))
+                              #Id CmpId Name RkHt RkWh RkDh RkOrn RkX RkY #O OA ColMx WtMx PwrMx  L   LS  U   UP WtCurt WPln HtCurt HP PwrCrt PP PwrAt P  Width Height
+data.push(RackInfoConstructor(1470, "50M", 42, 483, 0, 0, 4250,   3650, 0, 1, 35000, 500, "NULL", 1,  41, 1,  0, 16,    0,   102,   0, "NULL",   0, 115,  1, 1500, 700))
 data.push(RackInfoConstructor(1471, "50N", 42, 483, 0, 0, 4250,   2950, 0, 1, 35000, 500, 300,   1,  35, 5,  0, 0,     0,   0,     0, 0,     0, 0,    1, 1500, 700))
 data.push(RackInfoConstructor(1472, "50O", 42, 483, 0, 0, 4250,   2250, 0, 1, 35000, 500, 10000, 16, 27, 15, 0, 172.8, 0,   12700, 0, 0,     0, 0,    1, 1500, 700))
 data.push(RackInfoConstructor(1473, "50P", 42, 483, 0, 0, 4250,   1550, 0, 1, 35000, 500, 10000, 1,  42, 0,  0, 0,     0,   0,     0, 0,     0, 0,    1, 1500, 700))
