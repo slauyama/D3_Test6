@@ -4,6 +4,7 @@ var clean = require('gulp-clean'),
 	coffee = require('gulp-coffee'),
 	concat = require('gulp-concat'),
 	concatcss = require('gulp-concat-css'),
+	jade = require('gulp-jade'),
 	jshint = require('gulp-jshint'),
 	minifycss = require('gulp-minify-css'),
 	notify = require('gulp-notify'),
@@ -16,6 +17,7 @@ gulp.task('default', ['clean'], function() {
     gulp.start('css', 'coffee', 'watch');
 });
 
+//CSS
 gulp.task('css', function() {
 	return gulp.src('src/css/*.scss')
 		.pipe(sass())
@@ -41,14 +43,25 @@ gulp.task('coffee', function() {
     	.pipe(notify({ message: 'Coffee task complete' }));
 });
 
-// Clean
-gulp.task('clean', function() {
-  return gulp.src(['dist/styles', 'dist/scripts', 'dist/images'], {read: false})
-    .pipe(clean());
+// Scripts
+gulp.task('jade', function() {
+  	return gulp.src('src/html/*.jade')
+		.pipe(jade({pretty:true}))
+    	.pipe(gulp.dest(''))
+    	.pipe(rename({ suffix: '.min' }))
+    	.pipe(gulp.dest(''))
+    	.pipe(notify({ message: 'Jade task complete' }));
 });
 
-// Watch .js and .scss files
+// Clean
+gulp.task('clean', function() {
+  	return gulp.src(['css', 'js', '.sass-cache'], {read: false})
+    	.pipe(clean());
+});
+
+// Watch .js, .scss, and .jade files
 gulp.task('watch', function() {
 	gulp.watch('src/css/*.scss', ['css']);
 	gulp.watch('src/js/*.coffee', ['coffee']);
+	gulp.watch('src/html/*.jade', ['jade']);
 });

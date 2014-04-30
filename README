@@ -4,14 +4,12 @@ It uses coffeescript, d3, x3dom, and sass
 
 To Do
 Hover over data racks Tool tips view-source:http://www.x3dom.org/x3dom/test/functional/indexedLineSet.html
-Consider no Temp, Weight Power Values
 Use JSON or CSV as opposed to raw data (consider building conversion for larger sets of data)
 Live Reload
 Need to use more D3 management
 Add light perpendicular to Front
 Want to update animation popping up of boxes
 Use the minified javascript
-Use Jade
 Test in IE8
 
 Bugs / Issues
@@ -19,7 +17,11 @@ Weird modifying views. Changing the setting on the views after toggling them aro
 	Cant use debounce. Need to timeout all functions
 
 4/30
-
+Implemented Jade
+Fixed Gulp Clean call to remove .sass-caches
+Removed Test.bat
+Added back up if readings (power, weight, heat) are not numeric
+	Consider no Temp, Weight Power Values
 
 4/28
 Made Grid Percise and scaleable

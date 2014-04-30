@@ -1,0 +1,64 @@
+doctype html
+html 
+	head
+		meta(http-equiv="X-UA-Compatible" content="chrome=1")
+		meta(http-equiv="Content-Type" content="text/html;charset=utf-8")
+		title X3DOM Test 6
+		script type="text/javascript" src="http://mbostock.github.com/d3/d3.js"
+		script type="text/javascript" src="http://x3dom.org/x3dom/example/x3dom.js"
+		
+		link(rel="stylesheet" type="text/css" href="css/main.min.css")
+		link(href='http://fonts.googleapis.com/css?family=Lato:300,400' rel='stylesheet' type='text/css')
+	
+	body
+		div(class="optionDiv fltLeft")
+			h2 Camera Options:
+			div(class="formGroup") cameraOption
+				input(type="button", class="button selectedView" value="Top View")
+				input(type="button", class="button", value="Front View")
+				input(type="button", class="button", value="Side View")
+				input(type="button", class="button", value="Back View")
+				input(type="button", class="button", value="Perspective")
+				//Custom View Removed
+				//input type="button" class="button" value="Custom View"
+			
+			h2 Color Options:
+			div(class="formGroup colorOption")
+				input(type="button", class="button selectedColor", value="Power")
+				input(type="button", class="button", value="Weight")
+				input(type="button", class="button", value="Temperature")
+			
+			h2 Other Options:
+			div(class="formGroup")
+				label(for="gridToggle") Grid:
+				input(type="checkbox" id="gridToggle" class="checkbox" checked="true")
+
+		div(class="fltClear")
+		x3d#x3dElement(class="fltLeft")
+		div#rackDataDiv
+			h2 Rack Information:
+			ul(class="alignRight fltLeft")
+				li Component ID:&nbsp;
+				li Name:&nbsp;
+				li Power (C/P/M):&nbsp;
+				li Temperature (C/P/M):&nbsp;
+				li Weight (C/P/M):&nbsp;
+				li Used Units (C/P):&nbsp;
+				li Largest Unit Location:&nbsp;
+				li Largest Unit Size:&nbsp;
+				li Power Actual Derivation:&nbsp;
+			ul(class="fltRight")
+				li#ComponentID-Data 1471
+				li#Name-Data 50M
+				li#Power-Data 115/0/300
+				li#Temperature-Data 16/0/35000
+				li#Weight-Data 16/0/500
+				li#UsedUnits-Data 1/0
+				li#UnitLocation-Data 1
+				li#UnitSize-Data 41
+				li#PowerAD-Data 115
+			p(class="fltClear footNotes") *C - Current, P - Planned, M - Max/p
+
+		p did it work
+
+		script(src="js/main.js")

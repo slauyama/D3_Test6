@@ -20,34 +20,34 @@ Function.prototype.debounce = (threshold, execAsap) ->
       return
       
 bounds =
-   boundBox:
+   boundingBox:
       minX: HIGH_NUM, maxX: -HIGH_NUM, minY: HIGH_NUM, maxY: -HIGH_NUM
 
-   boundWthHgt:
-      maxWidth: -HIGH_NUM, maxHeight: -HIGH_NUM
+   maxWidth: -HIGH_NUM
+   maxHeight: -HIGH_NUM
 
    resetBounds: ->
-      @boundBox.minX = @boundBox.minY = HIGH_NUM
-      @boundBox.maxX = @boundBox.maxY = -HIGH_NUM
+      @boundingBox.minX = @boundingBox.minY = HIGH_NUM
+      @boundingBox.maxX = @boundingBox.maxY = -HIGH_NUM
 
-      @boundWthHgt.maxWidth = @boundWthHgt.maxHeight = -HIGH_NUM
+      @maxWidth = @maxHeight = -HIGH_NUM
       return
 
-   calculateBounds: () ->
+   calculateBounds: ->
       @resetBounds()
-      @boundBox.minX = Math.roundTo(d3.min(data, (d) -> d.XPos), 2)
-      @boundBox.maxX = Math.roundTo(d3.max(data, (d) -> d.XPos), 2)
-      @boundBox.minY = Math.roundTo(d3.min(data, (d) -> d.YPos), 2)
-      @boundBox.maxY = Math.roundTo(d3.max(data, (d) -> d.YPos), 2)
-      @boundWthHgt.maxWidth = Math.roundTo(d3.max(data, (d) -> d.FloorPlanWidth), 2)
-      @boundWthHgt.maxHeight = Math.roundTo(d3.max(data, (d) -> d.FloorPlanHeight), 2)
+      @boundingBox.minX = Math.roundTo(d3.min(data, (d) -> d.XPos), 2)
+      @boundingBox.maxX = Math.roundTo(d3.max(data, (d) -> d.XPos), 2)
+      @boundingBox.minY = Math.roundTo(d3.min(data, (d) -> d.YPos), 2)
+      @boundingBox.maxY = Math.roundTo(d3.max(data, (d) -> d.YPos), 2)
+      @maxWidth = Math.roundTo(d3.max(data, (d) -> d.FloorPlanWidth), 2)
+      @maxHeight = Math.roundTo(d3.max(data, (d) -> d.FloorPlanHeight), 2)
       return
 
 bounds.calculateBounds()
-frontDis = bounds.boundBox.minY - bounds.boundWthHgt.maxHeight - (bounds.boundBox.maxX - bounds.boundBox.minX)
-backDis = -frontDis
-sideDis = bounds.boundBox.maxX + bounds.boundWthHgt.maxWidth + (bounds.boundBox.maxY - bounds.boundBox.minY)
-topDis = (bounds.boundBox.maxX - bounds.boundBox.minY) + (bounds.boundBox.maxY - bounds.boundBox.minY)
+frontDistance = bounds.boundingBox.minY - bounds.maxHeight - (bounds.boundingBox.maxX - bounds.boundingBox.minX)
+backDistance = -frontDis
+sideDistance = bounds.boundingBox.maxX + bounds.maxWidth + (bounds.boundingBox.maxY - bounds.boundingBox.minY)
+topDistance = (bounds.boundingBox.maxX - bounds.boundingBox.minY) + (bounds.boundingBox.maxY - bounds.boundingBox.minY)
 
 x3d = d3.select("#x3dElement").attr( "height", "400px" ).attr( "width", "700px" )
 scene = x3d.append("scene")
@@ -56,9 +56,9 @@ scene.append("viewpoint").attr("id", "Top View").attr( "centerOfRotation", "0 0 
 scene.append("viewpoint").attr("id", "Front View").attr( "centerOfRotation", "0 0 0").attr( "position", "0 #{frontDis} 0" ).attr( "orientation", "1.0 0.0 0.0 1.570").attr( "fieldOfView", '0.95')
 scene.append("viewpoint").attr("id", "Side View").attr( "centerOfRotation", "0 0 0").attr( "position", "#{sideDis} 0 0.25" ).attr( "orientation", "0.50 0.50 0.50 2.093").attr( "fieldOfView", '0.95')
 scene.append("viewpoint").attr("id", "Back View").attr( "centerOfRotation", "0 0 0").attr( "position", "0.0 #{backDis} -.50" ).attr( "orientation", "0.0 0.75 0.65 3.14").attr( "fieldOfView", '0.95')
-scene.append("viewpoint").attr("id", "Perspective").attr( "centerOfRotation", "0 0 0").attr( "position", "#{backDis / 3} #{-sideDis} #{topDis / 3}" ).attr( "orientation", "1.0 0.25 0.25 1.25").attr( "fieldOfView", '0.95')
+scene.append("viewpoint").attr("id", "Perspective").attr( "centerOfRotation", "0 0 0").attr( "position", "#{backDistance / 3} #{-sideDis} #{topDistance / 3}" ).attr( "orientation", "1.0 0.25 0.25 1.25").attr( "fieldOfView", '0.95')
 # Custom View Removed
-# scene.append("viewpoint").attr("id", "Custom View").attr( "centerOfRotation", "0 0 0").attr( "position", "#{-backDis / 3} #{-sideDis} #{topDis / 3}"  ).attr( "orientation", "1.0 -0.2 -0.1 1.25" ).attr( "fieldOfView", '0.75')
+# scene.append("viewpoint").attr("id", "Custom View").attr( "centerOfRotation", "0 0 0").attr( "position", "#{-backDistance / 3} #{-sideDis} #{topDistance / 3}"  ).attr( "orientation", "1.0 -0.2 -0.1 1.25" ).attr( "fieldOfView", '0.75')
 scene.append("PointLight").attr("on", "TRUE").attr('intensity','1.0').attr('color', '1.0 0.0 0.0').attr('attenuation', '1.0000 0.0000 0.0000').attr('location',"#{sideDis} 0 0").attr('radius','200.0')
 
 HIGH_NUM = 9007199254740992
@@ -87,7 +87,7 @@ display = ( data ) ->
 
    shapesEnter.append('appearance').append('material')
 
-   scene.selectAll('material').data(data).transition().duration(1000).delay(500).attr('diffuseColor', (d)-> colorFunc(d))
+   scene.selectAll('material').data(data).transition().duration(1000).delay(500).attr('diffuseColor', (d)-> setRackColor(d))
 
    shapesEnter.append('box').data(data).attr('size', (d) -> d.FloorPlanWidth + ' ' + (d.FloorPlanHeight - 0.1) + ' ' + d.RackUnitHeight)
 
@@ -97,7 +97,7 @@ display data
 
 setInterval (-> display data), 10000
 
-colorFunc = (data) ->
+setRackColor = (data) ->
    switch document.getElementsByClassName('selectedColor')[0].value
       when "Power"
             value = if isNumber(data.PowerCurrent / data.PowerMax) then data.PowerCurrent / data.PowerMax else "steelblue"
@@ -110,7 +110,7 @@ colorFunc = (data) ->
 
    if value is "steelblue"
       return "steelblue"
-   
+
    if value < 0.5
       r = Math.floor(value * 255)
       g = 200
@@ -148,13 +148,13 @@ gridSetup = (bounds)->
    coodStr = ""
    lineset = 0
 
-   gridHeightStart = Math.roundTo(Math.ceil((bounds.boundBox.minY - bounds.boundWthHgt.maxHeight) / 0.6 - 1) * 0.6, 2)
-   gridHeightEnd = Math.roundTo(Math.ceil((bounds.boundBox.maxY + bounds.boundWthHgt.maxHeight) / 0.6 + 1) * 0.6, 2)
-   gridWidthStart = Math.roundTo(Math.ceil((bounds.boundBox.minX - bounds.boundWthHgt.maxWidth) / 0.6 - 1) * 0.6, 2)
-   gridWidthEnd = Math.roundTo(Math.ceil((bounds.boundBox.maxX + bounds.boundWthHgt.maxWidth) / 0.6 + 1) * 0.6, 2)
+   gridHeightStart = Math.roundTo(Math.ceil((bounds.boundingBox.minY - bounds.maxHeight) / 0.6 - 1) * 0.6, 2)
+   gridHeightEnd = Math.roundTo(Math.ceil((bounds.boundingBox.maxY + bounds.maxHeight) / 0.6 + 1) * 0.6, 2)
+   gridWidthStart = Math.roundTo(Math.ceil((bounds.boundingBox.minX - bounds.maxWidth) / 0.6 - 1) * 0.6, 2)
+   gridWidthEnd = Math.roundTo(Math.ceil((bounds.boundingBox.maxX + bounds.maxWidth) / 0.6 + 1) * 0.6, 2)
 
    # Verticle lines on the Grid
-   grid = gridWidthStart 
+   gridStart = gridWidthStart 
    while grid <= gridWidthEnd
       pointStr += "#{grid} #{gridHeightStart} -1 #{grid} #{gridHeightEnd} -1 "
       coodStr += "#{lineset} #{lineset + 1} -1 "
@@ -162,7 +162,7 @@ gridSetup = (bounds)->
       lineset += 2
 
    # Horizontal Lines on the Grid
-   grid = gridHeightStart
+   gridStart = gridHeightStart
    while grid <= gridHeightEnd
       pointStr += "#{gridWidthStart} #{grid} -1 #{gridWidthEnd} #{grid} -1 "
       coodStr += "#{lineset} #{lineset + 1} -1 "
