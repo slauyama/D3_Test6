@@ -45,21 +45,21 @@ bounds =
 
 bounds.calculateBounds()
 frontDistance = bounds.boundingBox.minY - bounds.maxHeight - (bounds.boundingBox.maxX - bounds.boundingBox.minX)
-backDistance = -frontDis
+backDistance = -frontDistance
 sideDistance = bounds.boundingBox.maxX + bounds.maxWidth + (bounds.boundingBox.maxY - bounds.boundingBox.minY)
 topDistance = (bounds.boundingBox.maxX - bounds.boundingBox.minY) + (bounds.boundingBox.maxY - bounds.boundingBox.minY)
 
 x3d = d3.select("#x3dElement").attr( "height", "400px" ).attr( "width", "700px" )
 scene = x3d.append("scene")
 
-scene.append("viewpoint").attr("id", "Top View").attr( "centerOfRotation", "0 0 0").attr( "position", "0 0 #{topDis}" ).attr( "orientation", "0.0 0.0 0.0 0.0" ).attr( "fieldOfView", '0.75')
-scene.append("viewpoint").attr("id", "Front View").attr( "centerOfRotation", "0 0 0").attr( "position", "0 #{frontDis} 0" ).attr( "orientation", "1.0 0.0 0.0 1.570").attr( "fieldOfView", '0.95')
-scene.append("viewpoint").attr("id", "Side View").attr( "centerOfRotation", "0 0 0").attr( "position", "#{sideDis} 0 0.25" ).attr( "orientation", "0.50 0.50 0.50 2.093").attr( "fieldOfView", '0.95')
-scene.append("viewpoint").attr("id", "Back View").attr( "centerOfRotation", "0 0 0").attr( "position", "0.0 #{backDis} -.50" ).attr( "orientation", "0.0 0.75 0.65 3.14").attr( "fieldOfView", '0.95')
-scene.append("viewpoint").attr("id", "Perspective").attr( "centerOfRotation", "0 0 0").attr( "position", "#{backDistance / 3} #{-sideDis} #{topDistance / 3}" ).attr( "orientation", "1.0 0.25 0.25 1.25").attr( "fieldOfView", '0.95')
+scene.append("viewpoint").attr("id", "Top View").attr( "centerOfRotation", "0 0 0").attr( "position", "0 0 #{topDistance}" ).attr( "orientation", "0.0 0.0 0.0 0.0" ).attr( "fieldOfView", '0.75')
+scene.append("viewpoint").attr("id", "Front View").attr( "centerOfRotation", "0 0 0").attr( "position", "0 #{frontDistance} 0" ).attr( "orientation", "1.0 0.0 0.0 1.570").attr( "fieldOfView", '0.95')
+scene.append("viewpoint").attr("id", "Side View").attr( "centerOfRotation", "0 0 0").attr( "position", "#{sideDistance} 0 0.25" ).attr( "orientation", "0.50 0.50 0.50 2.093").attr( "fieldOfView", '0.95')
+scene.append("viewpoint").attr("id", "Back View").attr( "centerOfRotation", "0 0 0").attr( "position", "0.0 #{backDistance} -.50" ).attr( "orientation", "0.0 0.75 0.65 3.14").attr( "fieldOfView", '0.95')
+scene.append("viewpoint").attr("id", "Perspective").attr( "centerOfRotation", "0 0 0").attr( "position", "#{backDistance / 3} #{-sideDistance} #{topDistance / 3}" ).attr( "orientation", "1.0 0.25 0.25 1.25").attr( "fieldOfView", '0.95')
 # Custom View Removed
 # scene.append("viewpoint").attr("id", "Custom View").attr( "centerOfRotation", "0 0 0").attr( "position", "#{-backDistance / 3} #{-sideDis} #{topDistance / 3}"  ).attr( "orientation", "1.0 -0.2 -0.1 1.25" ).attr( "fieldOfView", '0.75')
-scene.append("PointLight").attr("on", "TRUE").attr('intensity','1.0').attr('color', '1.0 0.0 0.0').attr('attenuation', '1.0000 0.0000 0.0000').attr('location',"#{sideDis} 0 0").attr('radius','200.0')
+scene.append("PointLight").attr("on", "TRUE").attr('intensity','1.0').attr('color', '1.0 0.0 0.0').attr('attenuation', '1.0000 0.0000 0.0000').attr('location',"#{sideDistance} 0 0").attr('radius','200.0')
 
 HIGH_NUM = 9007199254740992
 

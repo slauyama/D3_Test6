@@ -4,8 +4,8 @@ html
 		meta(http-equiv="X-UA-Compatible" content="chrome=1")
 		meta(http-equiv="Content-Type" content="text/html;charset=utf-8")
 		title X3DOM Test 6
-		script type="text/javascript" src="http://mbostock.github.com/d3/d3.js"
-		script type="text/javascript" src="http://x3dom.org/x3dom/example/x3dom.js"
+		script(type="text/javascript" src="http://mbostock.github.com/d3/d3.js")
+		script(type="text/javascript" src="http://x3dom.org/x3dom/example/x3dom.js")
 		
 		link(rel="stylesheet" type="text/css" href="css/main.min.css")
 		link(href='http://fonts.googleapis.com/css?family=Lato:300,400' rel='stylesheet' type='text/css')
@@ -13,7 +13,7 @@ html
 	body
 		div(class="optionDiv fltLeft")
 			h2 Camera Options:
-			div(class="formGroup") cameraOption
+			div(class="formGroup cameraOption")
 				input(type="button", class="button selectedView" value="Top View")
 				input(type="button", class="button", value="Front View")
 				input(type="button", class="button", value="Side View")
@@ -58,7 +58,5 @@ html
 				li#UnitSize-Data 41
 				li#PowerAD-Data 115
 			p(class="fltClear footNotes") *C - Current, P - Planned, M - Max/p
-
-		p did it work
 
 		script(src="js/main.js")

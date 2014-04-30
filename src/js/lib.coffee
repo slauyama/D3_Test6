@@ -1,6 +1,5 @@
 # Simon's function lib
 # Personal Library for Functions
-"use strict";
 
 # Function rounds numbers to decimal certain decimal place
 # Takes in a num and a round to point
