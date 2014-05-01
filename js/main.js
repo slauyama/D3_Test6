@@ -2,36 +2,55 @@
   "use strict";
   var HIGH_NUM, RackInfoConstructor, backDistance, bounds, clearAllSelected, data, display, frontDistance, gridSetup, isNumber, rackDataFunc, scene, setRackColor, sideDistance, toggleCamera, toggleColor, topDistance, x3d;
 
-  RackInfoConstructor = function(componentID, name, rackUnitHeight, rackWidth, rackDepth, rackOrientation, xPos, yPos, numberingOrigin, overlappingAllowed, coolingMax, weightMax, powerMax, largestUnitLocation, largestUnitSize, usedUnitsCurrent, usedUnitsPlanned, weightCurrent, weightPlanned, heatDissipationCurrent, heatDissipationPlanned, powerCurrent, powerPlanned, powerActual, powerActualDerivation, floorPlanWidth, floorPlanHeight) {
+  Math.roundTo = function(num, amount) {
+    if (amount == null) {
+      amount = 0;
+    }
+    return Math.round(num * Math.pow(10, amount)) / Math.pow(10, amount);
+  };
+
+  console.logDate = function() {
+    var timestamp;
+    if (arguments.length) {
+      timestamp = '[' + new Date().toUTCString() + '] ';
+      return console.log(timestamp, arguments);
+    }
+  };
+
+  isNumber = function(n) {
+    return !isNaN(parseFloat(n)) && isFinite(n);
+  };
+
+  RackInfoConstructor = function(componentID, name, rackUnitHeight, rackWidth, rackDepth, rackOrientation, xPosition, yPosition, numberingOrigin, overlappingAllowed, coolingMax, weightMax, powerMax, largestUnitLocation, largestUnitSize, usedUnitsCurrent, usedUnitsPlanned, weightCurrent, weightPlanned, heatDissipationCurrent, heatDissipationPlanned, powerCurrent, powerPlanned, powerActual, powerActualDerivation, floorPlanWidth, floorPlanHeight) {
     var obj;
     obj = {};
-    obj.ComponentID = componentID;
-    obj.Name = name;
-    obj.RackUnitHeight = rackUnitHeight * 44.5 / 1000;
-    obj.Width = rackWidth;
-    obj.Depth = rackDepth;
-    obj.RackOrientation = rackOrientation;
-    obj.XPos = (xPos - floorPlanWidth / 2) / 1000;
-    obj.YPos = (yPos - floorPlanHeight / 2) / 1000;
-    obj.NumberingOrigin = numberingOrigin;
-    obj.OverlappingAllowed = overlappingAllowed;
-    obj.CoolingMax = coolingMax;
-    obj.WeightMax = weightMax;
-    obj.PowerMax = powerMax;
-    obj.LargestUnitLocation = largestUnitLocation;
-    obj.LargestUnitSize = largestUnitSize;
-    obj.UsedUnitsCurrent = usedUnitsCurrent;
-    obj.UsedUnitsPlanned = usedUnitsPlanned;
-    obj.WeightCurrent = weightCurrent;
-    obj.WeightPlanned = weightPlanned;
-    obj.TemperatureCurrent = heatDissipationCurrent;
-    obj.TemperaturePlanned = heatDissipationPlanned;
-    obj.PowerCurrent = powerCurrent;
-    obj.PowerPlanned = powerPlanned;
-    obj.PowerActual = powerActual;
-    obj.PowerActualDerivation = powerActualDerivation;
-    obj.FloorPlanWidth = floorPlanWidth / 1000;
-    obj.FloorPlanHeight = floorPlanHeight / 1000;
+    obj.componentID = componentID;
+    obj.name = name;
+    obj.rackUnitHeight = rackUnitHeight * 44.5 / 1000;
+    obj.width = rackWidth;
+    obj.depth = rackDepth;
+    obj.rackOrientation = rackOrientation;
+    obj.xPosition = (xPosition - floorPlanWidth / 2) / 1000;
+    obj.yPosition = (yPosition - floorPlanHeight / 2) / 1000;
+    obj.numberingOrigin = numberingOrigin;
+    obj.overlappingAllowed = overlappingAllowed;
+    obj.coolingMax = coolingMax;
+    obj.weightMax = weightMax;
+    obj.powerMax = powerMax;
+    obj.largestUnitLocation = largestUnitLocation;
+    obj.largestUnitSize = largestUnitSize;
+    obj.usedUnitsCurrent = usedUnitsCurrent;
+    obj.usedUnitsPlanned = usedUnitsPlanned;
+    obj.weightCurrent = weightCurrent;
+    obj.weightPlanned = weightPlanned;
+    obj.temperatureCurrent = heatDissipationCurrent;
+    obj.temperaturePlanned = heatDissipationPlanned;
+    obj.powerCurrent = powerCurrent;
+    obj.powerPlanned = powerPlanned;
+    obj.powerActual = powerActual;
+    obj.powerActualDerivation = powerActualDerivation;
+    obj.floorPlanWidth = floorPlanWidth / 1000;
+    obj.floorPlanHeight = floorPlanHeight / 1000;
     return obj;
   };
 
@@ -126,52 +145,10 @@
   console.log(data.length);
 
   data = data.filter(function(d) {
-    return d.Name.indexOf("Tile") === -1 && !isNaN(d.XPos) && !isNaN(d.YPos) && !isNaN(d.YPos) && !isNaN(d.FloorPlanWidth) && !isNaN(d.FloorPlanHeight);
+    return d.name.indexOf("Tile") === -1 && isNumber(d.xPosition) && isNumber(d.yPosition) && isNumber(d.floorPlanWidth) && isNumber(d.floorPlanHeight);
   });
 
   console.log(data.length);
-
-  Math.roundTo = function(num, amount) {
-    if (amount == null) {
-      amount = 0;
-    }
-    return Math.round(num * Math.pow(10, amount)) / Math.pow(10, amount);
-  };
-
-  console.logDate = function() {
-    var timestamp;
-    if (arguments.length) {
-      timestamp = '[' + new Date().toUTCString() + '] ';
-      return console.log(timestamp, arguments);
-    }
-  };
-
-  isNumber = function(n) {
-    return !isNaN(parseFloat(n)) && isFinite(n);
-  };
-
-  Function.prototype.debounce = function(threshold, execAsap) {
-    var func, timeout;
-    func = this;
-    timeout = 0;
-    return function() {
-      var args, delayed, obj;
-      obj = this;
-      args = arguments;
-      delayed = function() {
-        if (!execAsap) {
-          func.apply(obj, args);
-        }
-        timeout = null;
-      };
-      if (timeout) {
-        clearTimeout(timeout);
-      } else if (execAsap) {
-        func.apply(obj, args);
-      }
-      timeout = setTimeout(delayed, threshold || 100);
-    };
-  };
 
   bounds = {
     boundingBox: {
@@ -190,22 +167,22 @@
     calculateBounds: function() {
       this.resetBounds();
       this.boundingBox.minX = Math.roundTo(d3.min(data, function(d) {
-        return d.XPos;
+        return d.xPosition;
       }), 2);
       this.boundingBox.maxX = Math.roundTo(d3.max(data, function(d) {
-        return d.XPos;
+        return d.xPosition;
       }), 2);
       this.boundingBox.minY = Math.roundTo(d3.min(data, function(d) {
-        return d.YPos;
+        return d.yPosition;
       }), 2);
       this.boundingBox.maxY = Math.roundTo(d3.max(data, function(d) {
-        return d.YPos;
+        return d.yPosition;
       }), 2);
       this.maxWidth = Math.roundTo(d3.max(data, function(d) {
-        return d.FloorPlanWidth;
+        return d.floorPlanWidth;
       }), 2);
       this.maxHeight = Math.roundTo(d3.max(data, function(d) {
-        return d.FloorPlanHeight;
+        return d.floorPlanHeight;
       }), 2);
     }
   };
@@ -246,17 +223,17 @@
     var shapesEnter, transforms;
     transforms = scene.selectAll('transform').data(data);
     shapesEnter = transforms.enter().append('transform').append('shape').data(data).attr('id', function(d) {
-      return 'rack' + d.ComponentID;
+      return 'rack' + d.componentID;
     }).attr('class', 'rack');
     transforms.transition().attr('translation', function(d, i) {
-      return d.XPos + ' ' + d.YPos + ' 0.0';
+      return d.xPosition + ' ' + d.yPosition + ' 0.0';
     });
     shapesEnter.append('appearance').append('material');
     scene.selectAll('material').data(data).transition().duration(1000).delay(500).attr('diffuseColor', function(d) {
       return setRackColor(d);
     });
     shapesEnter.append('box').data(data).attr('size', function(d) {
-      return d.FloorPlanWidth + ' ' + (d.FloorPlanHeight - 0.1) + ' ' + d.RackUnitHeight;
+      return d.floorPlanWidth + ' ' + (d.floorPlanHeight - 0.1) + ' ' + d.rackUnitHeight;
     });
   };
 
@@ -268,15 +245,18 @@
 
   setRackColor = function(data) {
     var g, r, value;
-    switch (document.getElementsByClassName('selectedColor')[0].value) {
+    switch (document.getElementsByClassName('selected-color')[0].value) {
       case "Power":
-        value = isNumber(data.PowerCurrent / data.PowerMax) ? data.PowerCurrent / data.PowerMax : "steelblue";
+        value = data.powerCurrent / data.powerMax;
+        value = isNumber(value) ? value : "steelblue";
         break;
       case "Weight":
-        value = isNumber(data.WeightCurrent / data.WeightMax) ? data.WeightCurrent / data.WeightMax : "steelblue";
+        value = data.weightCurrent / data.weightMax;
+        value = isNumber(value) ? value : "steelblue";
         break;
       case "Temperature":
-        value = isNumber(data.TemperatureCurrent / data.CoolingMax) ? data.TemperatureCurrent / data.CoolingMax : "steelblue";
+        value = data.temperatureCurrent / data.coolingMax;
+        value = isNumber(value) ? value : "steelblue";
         break;
       default:
         value = "steelblue";
@@ -295,14 +275,14 @@
   };
 
   toggleCamera = function() {
-    clearAllSelected('selectedView');
-    this.className += " selectedView";
+    clearAllSelected('selected-view');
+    this.className += " selected-view";
     document.getElementById(this.value).setAttribute('set_bind', 'true');
   };
 
   toggleColor = function() {
-    clearAllSelected('selectedColor');
-    this.className += " selectedColor";
+    clearAllSelected('selected-color');
+    this.className += " selected-color";
     return display(data);
   };
 
@@ -315,44 +295,44 @@
   };
 
   gridSetup = function(bounds) {
-    var coodStr, grid, gridHeightEnd, gridHeightStart, gridStart, gridWidthEnd, gridWidthStart, lineset, pointStr, set, shape;
+    var coordinateString, gridHeightEnd, gridHeightStart, gridStart, gridWidthEnd, gridWidthStart, lineString, lineset, set, shape;
     shape = scene.append('Transform').append('Shape').attr('id', 'grid');
     shape.append('Appearance').append('Material').attr('id', 'gridMaterial').attr('diffuseColor', '0.8, 0.8, 0.8').attr('transparency', '0.65');
-    pointStr = "";
-    coodStr = "";
+    coordinateString = "";
+    lineString = "";
     lineset = 0;
     gridHeightStart = Math.roundTo(Math.ceil((bounds.boundingBox.minY - bounds.maxHeight) / 0.6 - 1) * 0.6, 2);
     gridHeightEnd = Math.roundTo(Math.ceil((bounds.boundingBox.maxY + bounds.maxHeight) / 0.6 + 1) * 0.6, 2);
     gridWidthStart = Math.roundTo(Math.ceil((bounds.boundingBox.minX - bounds.maxWidth) / 0.6 - 1) * 0.6, 2);
     gridWidthEnd = Math.roundTo(Math.ceil((bounds.boundingBox.maxX + bounds.maxWidth) / 0.6 + 1) * 0.6, 2);
     gridStart = gridWidthStart;
-    while (grid <= gridWidthEnd) {
-      pointStr += "" + grid + " " + gridHeightStart + " -1 " + grid + " " + gridHeightEnd + " -1 ";
-      coodStr += "" + lineset + " " + (lineset + 1) + " -1 ";
-      grid = Math.roundTo(grid + 0.6, 2);
+    while (gridStart <= gridWidthEnd) {
+      lineString += "" + gridStart + " " + gridHeightStart + " -1 " + gridStart + " " + gridHeightEnd + " -1 ";
+      coordinateString += "" + lineset + " " + (lineset + 1) + " -1 ";
+      gridStart = Math.roundTo(gridStart + 0.6, 2);
       lineset += 2;
     }
     gridStart = gridHeightStart;
-    while (grid <= gridHeightEnd) {
-      pointStr += "" + gridWidthStart + " " + grid + " -1 " + gridWidthEnd + " " + grid + " -1 ";
-      coodStr += "" + lineset + " " + (lineset + 1) + " -1 ";
-      grid = Math.roundTo(grid + 0.6, 2);
+    while (gridStart <= gridHeightEnd) {
+      lineString += "" + gridWidthStart + " " + gridStart + " -1 " + gridWidthEnd + " " + gridStart + " -1 ";
+      coordinateString += "" + lineset + " " + (lineset + 1) + " -1 ";
+      gridStart = Math.roundTo(gridStart + 0.6, 2);
       lineset += 2;
     }
-    set = shape.append('IndexedLineSet').attr('coordIndex', '#{coodStr}');
-    return set.append('Coordinate').attr('point', "" + pointStr);
+    set = shape.append('IndexedLineSet').attr('coordIndex', '#{coordinateString}');
+    return set.append('Coordinate').attr('point', "" + lineString);
   };
 
   gridSetup(bounds);
 
   window.onload = function() {
     var cameraButton, colorButton, _i, _j, _len, _len1, _ref, _ref1;
-    _ref = document.getElementsByClassName('colorOption')[0].children;
+    _ref = document.getElementsByClassName('color-Option')[0].children;
     for (_i = 0, _len = _ref.length; _i < _len; _i++) {
       colorButton = _ref[_i];
       colorButton.onmouseover = toggleColor;
     }
-    _ref1 = document.getElementsByClassName('cameraOption')[0].children;
+    _ref1 = document.getElementsByClassName('camera-Option')[0].children;
     for (_j = 0, _len1 = _ref1.length; _j < _len1; _j++) {
       cameraButton = _ref1[_j];
       cameraButton.onmouseover = toggleCamera;

@@ -8,45 +8,41 @@ html
 		script(type="text/javascript" src="http://x3dom.org/x3dom/example/x3dom.js")
 		
 		link(rel="stylesheet" type="text/css" href="css/main.min.css")
-		link(href='http://fonts.googleapis.com/css?family=Lato:300,400' rel='stylesheet' type='text/css')
 	
 	body
-		div(class="optionDiv fltLeft")
+		- var iterator = 0
+		div.rack-view-options.fltLeft
 			h2 Camera Options:
-			div(class="formGroup cameraOption")
-				input(type="button", class="button selectedView" value="Top View")
-				input(type="button", class="button", value="Front View")
-				input(type="button", class="button", value="Side View")
-				input(type="button", class="button", value="Back View")
-				input(type="button", class="button", value="Perspective")
-				//Custom View Removed
-				//input type="button" class="button" value="Custom View"
+			div.buttons.camera-Option
+				- var cameraChoice = ["Top View", "Front View", "Side View", "Back View", "Perspective"]
+				- for (iterator = 0; iterator < cameraChoice.length; iterator++)
+					if !iterator
+						input.button(type="button" class=" selected-view" value=cameraChoice[iterator])
+					else
+						input.button(type="button" value=cameraChoice[iterator])
 			
 			h2 Color Options:
-			div(class="formGroup colorOption")
-				input(type="button", class="button selectedColor", value="Power")
-				input(type="button", class="button", value="Weight")
-				input(type="button", class="button", value="Temperature")
+			div.buttons.color-Option
+				- var colorChoice = ["Power", "Weight", "Temperature"]
+				- for (iterator = 0; iterator < colorChoice.length; iterator++)
+					if !iterator
+						input.button(type="button" class=" selected-color" value=colorChoice[iterator])
+					else
+						input.button(type="button" value=colorChoice[iterator])
 			
 			h2 Other Options:
-			div(class="formGroup")
+			div.formGroup
 				label(for="gridToggle") Grid:
-				input(type="checkbox" id="gridToggle" class="checkbox" checked="true")
+				input.checkbox(type="checkbox" id="gridToggle"  checked="true")
 
-		div(class="fltClear")
-		x3d#x3dElement(class="fltLeft")
-		div#rackDataDiv
+		div.fltClear
+		x3d#x3dElement.fltLeft
+		div#rack-Data
 			h2 Rack Information:
-			ul(class="alignRight fltLeft")
-				li Component ID:&nbsp;
-				li Name:&nbsp;
-				li Power (C/P/M):&nbsp;
-				li Temperature (C/P/M):&nbsp;
-				li Weight (C/P/M):&nbsp;
-				li Used Units (C/P):&nbsp;
-				li Largest Unit Location:&nbsp;
-				li Largest Unit Size:&nbsp;
-				li Power Actual Derivation:&nbsp;
+			ul.alignRight.fltLeft
+				each descriptor in ["Component ID", "Name", "Power (C/P/M)", "Temperature (C/P/M)", "Weight (C/P/M)", "Used Units (C/P)","Largest Unit Location", "Largest Unit Size", "Power Actual Derivation"]
+					li= descriptor + ": "
+
 			ul(class="fltRight")
 				li#ComponentID-Data 1471
 				li#Name-Data 50M
@@ -57,6 +53,8 @@ html
 				li#UnitLocation-Data 1
 				li#UnitSize-Data 41
 				li#PowerAD-Data 115
-			p(class="fltClear footNotes") *C - Current, P - Planned, M - Max/p
+			p.fltClear.footNotes *C - Current, P - Planned, M - Max
+			br/
+			h2 Rack Leaders:
 
 		script(src="js/main.js")

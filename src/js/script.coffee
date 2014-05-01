@@ -1,24 +1,3 @@
-Function.prototype.debounce = (threshold, execAsap) ->
-   func = this
-   timeout = 0
-   return ->
-      obj = this
-      args = arguments
-
-      delayed = ->
-         if (!execAsap)
-            func.apply(obj, args)
-         timeout = null
-         return
- 
-      if (timeout)
-         clearTimeout(timeout)
-      else if (execAsap)
-         func.apply(obj, args)
- 
-      timeout = setTimeout(delayed, threshold || 100) 
-      return
-      
 bounds =
    boundingBox:
       minX: HIGH_NUM, maxX: -HIGH_NUM, minY: HIGH_NUM, maxY: -HIGH_NUM
@@ -35,12 +14,12 @@ bounds =
 
    calculateBounds: ->
       @resetBounds()
-      @boundingBox.minX = Math.roundTo(d3.min(data, (d) -> d.XPos), 2)
-      @boundingBox.maxX = Math.roundTo(d3.max(data, (d) -> d.XPos), 2)
-      @boundingBox.minY = Math.roundTo(d3.min(data, (d) -> d.YPos), 2)
-      @boundingBox.maxY = Math.roundTo(d3.max(data, (d) -> d.YPos), 2)
-      @maxWidth = Math.roundTo(d3.max(data, (d) -> d.FloorPlanWidth), 2)
-      @maxHeight = Math.roundTo(d3.max(data, (d) -> d.FloorPlanHeight), 2)
+      @boundingBox.minX = Math.roundTo(d3.min(data, (d) -> d.xPosition), 2)
+      @boundingBox.maxX = Math.roundTo(d3.max(data, (d) -> d.xPosition), 2)
+      @boundingBox.minY = Math.roundTo(d3.min(data, (d) -> d.yPosition), 2)
+      @boundingBox.maxY = Math.roundTo(d3.max(data, (d) -> d.yPosition), 2)
+      @maxWidth = Math.roundTo(d3.max(data, (d) -> d.floorPlanWidth), 2)
+      @maxHeight = Math.roundTo(d3.max(data, (d) -> d.floorPlanHeight), 2)
       return
 
 bounds.calculateBounds()
@@ -52,44 +31,59 @@ topDistance = (bounds.boundingBox.maxX - bounds.boundingBox.minY) + (bounds.boun
 x3d = d3.select("#x3dElement").attr( "height", "400px" ).attr( "width", "700px" )
 scene = x3d.append("scene")
 
-scene.append("viewpoint").attr("id", "Top View").attr( "centerOfRotation", "0 0 0").attr( "position", "0 0 #{topDistance}" ).attr( "orientation", "0.0 0.0 0.0 0.0" ).attr( "fieldOfView", '0.75')
-scene.append("viewpoint").attr("id", "Front View").attr( "centerOfRotation", "0 0 0").attr( "position", "0 #{frontDistance} 0" ).attr( "orientation", "1.0 0.0 0.0 1.570").attr( "fieldOfView", '0.95')
-scene.append("viewpoint").attr("id", "Side View").attr( "centerOfRotation", "0 0 0").attr( "position", "#{sideDistance} 0 0.25" ).attr( "orientation", "0.50 0.50 0.50 2.093").attr( "fieldOfView", '0.95')
-scene.append("viewpoint").attr("id", "Back View").attr( "centerOfRotation", "0 0 0").attr( "position", "0.0 #{backDistance} -.50" ).attr( "orientation", "0.0 0.75 0.65 3.14").attr( "fieldOfView", '0.95')
-scene.append("viewpoint").attr("id", "Perspective").attr( "centerOfRotation", "0 0 0").attr( "position", "#{backDistance / 3} #{-sideDistance} #{topDistance / 3}" ).attr( "orientation", "1.0 0.25 0.25 1.25").attr( "fieldOfView", '0.95')
+scene.append("viewpoint").attr("id", "Top View")
+   .attr( "centerOfRotation", "0 0 0").attr( "position", "0 0 #{topDistance}" )
+   .attr( "orientation", "0.0 0.0 0.0 0.0" ).attr( "fieldOfView", '0.75')
+scene.append("viewpoint").attr("id", "Front View")
+   .attr( "centerOfRotation", "0 0 0").attr( "position", "0 #{frontDistance} 0" )
+   .attr( "orientation", "1.0 0.0 0.0 1.570").attr( "fieldOfView", '0.95')
+scene.append("viewpoint").attr("id", "Side View")
+   .attr( "centerOfRotation", "0 0 0").attr( "position", "#{sideDistance} 0 0.25" )
+   .attr( "orientation", "0.50 0.50 0.50 2.093").attr( "fieldOfView", '0.95')
+scene.append("viewpoint").attr("id", "Back View")
+   .attr( "centerOfRotation", "0 0 0").attr( "position", "0.0 #{backDistance} -.50" )
+   .attr( "orientation", "0.0 0.75 0.65 3.14").attr( "fieldOfView", '0.95')
+scene.append("viewpoint").attr("id", "Perspective").attr( "centerOfRotation", "0 0 0")
+   .attr( "position", "#{backDistance / 3} #{-sideDistance} #{topDistance / 3}" )
+   .attr( "orientation", "1.0 0.25 0.25 1.25").attr( "fieldOfView", '0.95')
 # Custom View Removed
 # scene.append("viewpoint").attr("id", "Custom View").attr( "centerOfRotation", "0 0 0").attr( "position", "#{-backDistance / 3} #{-sideDis} #{topDistance / 3}"  ).attr( "orientation", "1.0 -0.2 -0.1 1.25" ).attr( "fieldOfView", '0.75')
-scene.append("PointLight").attr("on", "TRUE").attr('intensity','1.0').attr('color', '1.0 0.0 0.0').attr('attenuation', '1.0000 0.0000 0.0000').attr('location',"#{sideDistance} 0 0").attr('radius','200.0')
+scene.append("PointLight").attr("on", "TRUE").attr('intensity','1.0')
+   .attr('color', '1.0 0.0 0.0').attr('attenuation', '1.0000 0.0000 0.0000')
+   .attr('location',"#{sideDistance} 0 0").attr('radius','200.0')
 
 HIGH_NUM = 9007199254740992
 
 rackDataFunc = (data) ->
-   # document.getElementById('ComponentID-Data').innerHTML = data.ComponentID
-   # document.getElementById('Name-Data').innerHTML = data.Name 
-   # document.getElementById('Power-Data').innerHTML = data.PowerCurrent+"/"+data.PowerPlanned+"/"+data.PowerMax
-   # document.getElementById('Temperature-Data').innerHTML = data.TemperatureCurrent+"/"+data.TemperaturePlanned+"/"+data.CoolingMax
-   # document.getElementById('Weight-Data').innerHTML = data.WeightCurrent+"/"+data.WeightPlanned+"/"+data.WeightMax
-   # document.getElementById('UsedUnits-Data').innerHTML = data.UsedUnitsCurrent+"/"+data.UsedUnitsPlanned
-   # document.getElementById('UnitLocation-Data').innerHTML = data.LargestUnitLocation
-   # document.getElementById('UnitSize-Data').innerHTML = data.LargestUnitSize 
-   # document.getElementById('PowerAD-Data').innerHTML = data.PowerActualDerivation
+   # document.getElementById('ComponentID-Data').innerHTML = data.componentID
+   # document.getElementById('Name-Data').innerHTML = data.name 
+   # document.getElementById('Power-Data').innerHTML = data.powerCurrent+"/"+data.powerPlanned+"/"+data.powerMax
+   # document.getElementById('Temperature-Data').innerHTML = data.temperatureCurrent+"/"+data.temperaturePlanned+"/"+data.coolingMax
+   # document.getElementById('Weight-Data').innerHTML = data.weightCurrent+"/"+data.weightPlanned+"/"+data.weightMax
+   # document.getElementById('UsedUnits-Data').innerHTML = data.usedUnitsCurrent+"/"+data.usedUnitsPlanned
+   # document.getElementById('UnitLocation-Data').innerHTML = data.largestUnitLocation
+   # document.getElementById('UnitSize-Data').innerHTML = data.largestUnitSize 
+   # document.getElementById('PowerAD-Data').innerHTML = data.powerActualDerivation
    console.log "justforshure"
    return
 
 display = ( data ) ->
    transforms = scene.selectAll('transform').data(data)
 
-   shapesEnter = transforms.enter().append('transform').append('shape').data(data).attr('id', (d)-> 'rack'+d.ComponentID).attr('class', 'rack')
+   shapesEnter = transforms.enter().append('transform')
+      .append('shape').data(data).attr('id', (d)-> 'rack'+d.componentID).attr('class', 'rack')
 
    # scene.selectAll('.rack').onmouseover = rackDataFuncs
 
-   transforms.transition().attr('translation', (d, i) -> d.XPos + ' ' + d.YPos + ' 0.0')
+   transforms.transition().attr('translation', (d, i) -> d.xPosition + ' ' + d.yPosition + ' 0.0')
 
    shapesEnter.append('appearance').append('material')
 
-   scene.selectAll('material').data(data).transition().duration(1000).delay(500).attr('diffuseColor', (d)-> setRackColor(d))
+   scene.selectAll('material').data(data).transition().duration(1000).delay(500)
+      .attr('diffuseColor', (d)-> setRackColor(d))
 
-   shapesEnter.append('box').data(data).attr('size', (d) -> d.FloorPlanWidth + ' ' + (d.FloorPlanHeight - 0.1) + ' ' + d.RackUnitHeight)
+   shapesEnter.append('box').data(data)
+      .attr('size', (d) -> d.floorPlanWidth + ' ' + (d.floorPlanHeight - 0.1) + ' ' + d.rackUnitHeight)
 
    return
 
@@ -98,13 +92,16 @@ display data
 setInterval (-> display data), 10000
 
 setRackColor = (data) ->
-   switch document.getElementsByClassName('selectedColor')[0].value
+   switch document.getElementsByClassName('selected-color')[0].value
       when "Power"
-            value = if isNumber(data.PowerCurrent / data.PowerMax) then data.PowerCurrent / data.PowerMax else "steelblue"
+         value = data.powerCurrent / data.powerMax
+         value = if isNumber(value) then value else "steelblue"
       when "Weight"
-         value = if isNumber(data.WeightCurrent / data.WeightMax) then data.WeightCurrent / data.WeightMax else "steelblue"
+         value = data.weightCurrent / data.weightMax
+         value = if isNumber(value) then value else "steelblue"
       when "Temperature"
-         value = if isNumber(data.TemperatureCurrent / data.CoolingMax) then data.TemperatureCurrent / data.CoolingMax else "steelblue"
+         value = data.temperatureCurrent / data.coolingMax
+         value = if isNumber(value) then value else "steelblue"
       else
          value = "steelblue"
 
@@ -121,14 +118,14 @@ setRackColor = (data) ->
    "#" + ((if r < 16 then "0" else "")) + r.toString(16) + ((if g < 16 then "0" else "")) + g.toString(16) + "00"
 
 toggleCamera = ->
-   clearAllSelected('selectedView')
-   @className += " selectedView"
+   clearAllSelected('selected-view')
+   @className += " selected-view"
    document.getElementById(@value).setAttribute('set_bind','true')
    return
 
 toggleColor = ->
-   clearAllSelected('selectedColor')
-   @className += " selectedColor"
+   clearAllSelected('selected-color')
+   @className += " selected-color"
    display data
 
 clearAllSelected = (str)->
@@ -142,10 +139,11 @@ gridSetup = (bounds)->
    # Give it a light grey color with transparency
    shape = scene.append('Transform').append('Shape').attr('id', 'grid')
    shape.append('Appearance').append('Material').attr('id', 'gridMaterial').attr('diffuseColor', '0.8, 0.8, 0.8').attr('transparency','0.65')
-   #pointStr is a string representing connections between coordinates
-   pointStr = ""
-   #coodStr is a string representing the coordinates
-   coodStr = ""
+   #coordinateString is a string representing the coordinates
+   coordinateString = ""
+   #lineString is a string representing connections between coordinates
+   lineString = ""
+   #lineset signifies what set of line user is on
    lineset = 0
 
    gridHeightStart = Math.roundTo(Math.ceil((bounds.boundingBox.minY - bounds.maxHeight) / 0.6 - 1) * 0.6, 2)
@@ -155,30 +153,30 @@ gridSetup = (bounds)->
 
    # Verticle lines on the Grid
    gridStart = gridWidthStart 
-   while grid <= gridWidthEnd
-      pointStr += "#{grid} #{gridHeightStart} -1 #{grid} #{gridHeightEnd} -1 "
-      coodStr += "#{lineset} #{lineset + 1} -1 "
-      grid = Math.roundTo(grid + 0.6, 2)
+   while gridStart <= gridWidthEnd
+      lineString += "#{gridStart} #{gridHeightStart} -1 #{gridStart} #{gridHeightEnd} -1 "
+      coordinateString += "#{lineset} #{lineset + 1} -1 "
+      gridStart = Math.roundTo(gridStart + 0.6, 2)
       lineset += 2
 
    # Horizontal Lines on the Grid
    gridStart = gridHeightStart
-   while grid <= gridHeightEnd
-      pointStr += "#{gridWidthStart} #{grid} -1 #{gridWidthEnd} #{grid} -1 "
-      coodStr += "#{lineset} #{lineset + 1} -1 "
-      grid = Math.roundTo(grid + 0.6, 2)
+   while gridStart <= gridHeightEnd
+      lineString += "#{gridWidthStart} #{gridStart} -1 #{gridWidthEnd} #{gridStart} -1 "
+      coordinateString += "#{lineset} #{lineset + 1} -1 "
+      gridStart = Math.roundTo(gridStart + 0.6, 2)
       lineset += 2
 
-   set = shape.append('IndexedLineSet').attr('coordIndex', '#{coodStr}')
-   set.append('Coordinate').attr('point', "#{pointStr}")
+   set = shape.append('IndexedLineSet').attr('coordIndex', '#{coordinateString}')
+   set.append('Coordinate').attr('point', "#{lineString}")
 
 # setup the grid
 gridSetup(bounds)
 
 window.onload = -> 
    #options setup. Initializes the button to proper function
-   colorButton.onmouseover = toggleColor for colorButton in document.getElementsByClassName('colorOption')[0].children
-   cameraButton.onmouseover = toggleCamera for cameraButton in document.getElementsByClassName('cameraOption')[0].children
+   colorButton.onmouseover = toggleColor for colorButton in document.getElementsByClassName('color-Option')[0].children
+   cameraButton.onmouseover = toggleCamera for cameraButton in document.getElementsByClassName('camera-Option')[0].children
 
    #this will turn off movement controls
    #document.getElementById('x3dElement').runtime.noNav()

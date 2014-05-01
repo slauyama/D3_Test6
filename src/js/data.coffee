@@ -1,36 +1,33 @@
-"use strict";
-
-RackInfoConstructor = ( componentID, name, rackUnitHeight, rackWidth, rackDepth, rackOrientation, xPos, yPos, numberingOrigin, overlappingAllowed, coolingMax, weightMax, powerMax, largestUnitLocation, largestUnitSize, usedUnitsCurrent, usedUnitsPlanned, weightCurrent, weightPlanned, heatDissipationCurrent, heatDissipationPlanned, powerCurrent, powerPlanned, powerActual, powerActualDerivation, floorPlanWidth, floorPlanHeight) ->
-                  # ComponentID  Name  RackUnitHeight  RackWidth  RackDepth  RackOrientation  rackX rackY NumberingOrigin  OverlappingAllowed  CoolingMax  WeightMax  PowerMax  LargestUnitLocation  LargestUnitSize  UsedUnitsCurrent  UsedUnitsPlanned  WeightCurrent  WeightPlanned  HeatDissipationCurrent  HeatDissipationPlanned  PowerCurrent  PowerPlanned  PowerActual  PowerActualDerivation  FloorPlanWidth  FloorPlanHeight
+RackInfoConstructor = (componentID, name, rackUnitHeight, rackWidth, rackDepth, rackOrientation, xPosition, yPosition, numberingOrigin, overlappingAllowed, coolingMax, weightMax, powerMax, largestUnitLocation, largestUnitSize, usedUnitsCurrent, usedUnitsPlanned, weightCurrent, weightPlanned, heatDissipationCurrent, heatDissipationPlanned, powerCurrent, powerPlanned, powerActual, powerActualDerivation, floorPlanWidth, floorPlanHeight) ->
+                     # ComponentID  Name  RackUnitHeight  RackWidth  RackDepth  RackOrientation   XPosition  yPosition  NumberingOrigin  OverlappingAllowed  CoolingMax  WeightMax  PowerMax  LargestUnitLocation  LargestUnitSize  UsedUnitsCurrent  UsedUnitsPlanned  WeightCurrent  WeightPlanned  HeatDissipationCurrent  HeatDissipationPlanned  PowerCurrent  PowerPlanned  PowerActual  PowerActualDerivation  FloorPlanWidth  FloorPlanHeight
    obj = {}
-   obj.ComponentID = componentID
-   obj.Name = name
-   obj.RackUnitHeight = rackUnitHeight * 44.5 / 1000
-   obj.Width = rackWidth
-   obj.Depth = rackDepth
-   obj.RackOrientation = rackOrientation
-   obj.XPos = (xPos - floorPlanWidth / 2) / 1000
-   obj.YPos = (yPos - floorPlanHeight/ 2) / 1000
-   obj.NumberingOrigin = numberingOrigin
-   obj.OverlappingAllowed = overlappingAllowed
-   obj.CoolingMax = coolingMax
-   obj.WeightMax = weightMax 
-   obj.PowerMax = powerMax
-   obj.LargestUnitLocation = largestUnitLocation
-   obj.LargestUnitSize = largestUnitSize
-   obj.UsedUnitsCurrent = usedUnitsCurrent
-   obj.UsedUnitsPlanned = usedUnitsPlanned
-   obj.WeightCurrent = weightCurrent
-   obj.WeightPlanned = weightPlanned
-   obj.TemperatureCurrent = heatDissipationCurrent
-   obj.TemperaturePlanned = heatDissipationPlanned
-   obj.PowerCurrent = powerCurrent
-   obj.PowerPlanned = powerPlanned
-   obj.PowerActual = powerActual
-   obj.PowerActualDerivation = powerActualDerivation
-   obj.FloorPlanWidth = floorPlanWidth / 1000
-   obj.FloorPlanHeight = floorPlanHeight / 1000
-
+   obj.componentID = componentID
+   obj.name = name
+   obj.rackUnitHeight = rackUnitHeight * 44.5 / 1000
+   obj.width = rackWidth
+   obj.depth = rackDepth
+   obj.rackOrientation = rackOrientation
+   obj.xPosition = (xPosition - floorPlanWidth / 2) / 1000
+   obj.yPosition = (yPosition - floorPlanHeight / 2) / 1000
+   obj.numberingOrigin = numberingOrigin
+   obj.overlappingAllowed = overlappingAllowed
+   obj.coolingMax = coolingMax
+   obj.weightMax = weightMax 
+   obj.powerMax = powerMax
+   obj.largestUnitLocation = largestUnitLocation
+   obj.largestUnitSize = largestUnitSize
+   obj.usedUnitsCurrent = usedUnitsCurrent
+   obj.usedUnitsPlanned = usedUnitsPlanned
+   obj.weightCurrent = weightCurrent
+   obj.weightPlanned = weightPlanned
+   obj.temperatureCurrent = heatDissipationCurrent
+   obj.temperaturePlanned = heatDissipationPlanned
+   obj.powerCurrent = powerCurrent
+   obj.powerPlanned = powerPlanned
+   obj.powerActual = powerActual
+   obj.powerActualDerivation = powerActualDerivation
+   obj.floorPlanWidth = floorPlanWidth / 1000
+   obj.floorPlanHeight = floorPlanHeight / 1000
    obj 
 
 data = []
@@ -132,7 +129,7 @@ data.push(new RackInfoConstructor(1509, "53U", 42, 483, 0, 0, -4150, -2650, 0, 1
 
 # Big Ass Data
                                #CompntId Name      RkHt RkWh RkDh RkOrn RkX  RkY  #O  OA ColMx WtMx PwrMx  L   LS  U   UP WtCurt WPln HtCurt HP PwrCrt PP PwrAt P  Width Height
-   # if obj.Name.indexOf("Tile") is -1 && !isNaN(obj.XPos) && !isNaN(obj.YPos)
+   # if obj.Name.indexOf("Tile") is -1 && !isNaN(obj.XPosition) && !isNaN(obj yPosition)
 # data.push(new RackInfoConstructor( 98005166, "07A Tile", 42, 483,   0,  0,  350,   4550,  0,  1,  0,  0,  0,  1,  42, 0,  0,  0,  0,  0,  0,  0,  0,  0,  1,  149,   349))
 # data.push(new RackInfoConstructor( 98005167, "07B Tile", 42, 483,   0,  0,  350,   4200,  0,  1,  0,  0,  0,  1,  42, 0,  0,  0,  0,  0,  0,  0,  0,  0,  1,  149,   349))
 # data.push(new RackInfoConstructor( 98005168, "07C Tile", 42, 483,   0,  0,  350,   3850,  0,  1,  0,  0,  0,  1,  42, 0,  0,  0,  0,  0,  0,  0,  0,  0,  1,  149,   349))
@@ -1096,7 +1093,7 @@ data.push(new RackInfoConstructor(1509, "53U", 42, 483, 0, 0, -4150, -2650, 0, 1
 
 console.log data.length
 data = data.filter((d) -> 
-   d.Name.indexOf("Tile") is -1 && !isNaN(d.XPos) && !isNaN(d.YPos) && !isNaN(d.YPos) && 
-   !isNaN(d.FloorPlanWidth) && !isNaN(d.FloorPlanHeight)
+   d.name.indexOf("Tile") is -1 && isNumber(d.xPosition) && isNumber(d.yPosition) && 
+   isNumber(d.floorPlanWidth) && isNumber(d.floorPlanHeight)
 )
 console.log data.length

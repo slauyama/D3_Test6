@@ -22,7 +22,7 @@ var htmlSrc = 'src/html/*.jade',
 /** FUNCTIONS **/ 
 
 function handleError(err) {
-	console.log(err.toString());
+	console.log("Error: " + err.toString);
 	gutil.log(err.toString);
 	gutil.beep;
 	this.emit('end');
@@ -37,10 +37,9 @@ gulp.task('default', function() {
 
 //CSS
 gulp.task('sass', function() {
-	return gulp.src(cssSrc)
+	return gulp.src('src/css/main.scss')
 		.pipe(sass({noCache: true}))
 			.on('error', handleError)
-		.pipe(concatcss('main.css'))
 	    .pipe(gulp.dest('css/'))
 	    .pipe(rename({suffix: '.min'}))
 	    .pipe(minifycss())
@@ -50,7 +49,7 @@ gulp.task('sass', function() {
 
 // Scripts
 gulp.task('coffee', function() {
-  	return gulp.src(jsSrc)
+  	return gulp.src(['src/js/lib.coffee', jsSrc])
 		.pipe(concat('main.js'))
 		.pipe(coffee())
 			.on('error', handleError)

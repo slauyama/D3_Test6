@@ -23,6 +23,7 @@ Weird modifying views. Changing the setting on the views after toggling them aro
 Weird Lighting issue on one side of rack
 
 4/30
+Figure out how to properly concat coffeescript files
 Gulp - Develop error awareness.
 Implemented Jade
 Fixed Gulp Clean call to remove .sass-caches
