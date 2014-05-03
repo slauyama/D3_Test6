@@ -97,9 +97,7 @@ x3d {
 			text-overflow: ellipsis;
 			overflow: hidden;
 			white-space: nowrap;
-			@include transition(11s);
 			&:hover {
-				@include transition(12s);
 				overflow: visible;
 				white-space: normal;
 			}

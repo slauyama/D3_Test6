@@ -141,17 +141,7 @@ x3d {
       width: 270;
       text-overflow: ellipsis;
       overflow: hidden;
-      white-space: nowrap;
-      -webkit-transition: all 11s linear;
-      -moz-transition: all 11s linear;
-      -ms-transition: all 11s linear;
-      -o-transition: all 11s linear;
-      transition: all 11s linear; }
+      white-space: nowrap; }
       #rack-Data .leader .leader-item:hover {
-        -webkit-transition: all 12s linear;
-        -moz-transition: all 12s linear;
-        -ms-transition: all 12s linear;
-        -o-transition: all 12s linear;
-        transition: all 12s linear;
         overflow: visible;
         white-space: normal; }
