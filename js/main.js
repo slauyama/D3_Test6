@@ -1,6 +1,6 @@
 (function() {
   "use strict";
-  var HIGH_NUM, RackInfoConstructor, backDistance, bounds, clearAllSelected, data, display, frontDistance, gridSetup, isNumber, rackDataFunc, scene, setRackColor, sideDistance, toggleCamera, toggleColor, topDistance, x3d;
+  var HIGH_NUM, RackInfoConstructor, backDistance, bounds, clearAllSelected, data, display, frontDistance, gridSetup, isNumber, rackDataFunc, scene, setRackColor, sideDistance, toggleCamera, toggleColor, topDataRacks, topDistance, topThreeLeader, x3d;
 
   Math.roundTo = function(num, amount) {
     if (amount == null) {
@@ -64,7 +64,7 @@
 
   data.push(new RackInfoConstructor(1473, "50P", 42, 483, 0, 0, 4250, 1550, 0, 1, 35000, 500, 10000, 1, 42, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1500, 700));
 
-  data.push(new RackInfoConstructor(1500, "50Q", 42, 483, 0, 0, 4250, 150, 1, 1, 35000, 500, 10000, 11, 22, 10, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1500, 700));
+  data.push(new RackInfoConstructor(1500, "50Q", 42, 483, 0, 0, 4250, 150, 1, 1, 35000, 500, 10000, 11, 22, 10, 0, 0, 0, 0, 0, 5600, 0, 0, 1, 1500, 700));
 
   data.push(new RackInfoConstructor(1501, "50R", 42, 483, 0, 0, 4250, -550, 0, 1, 35000, 500, 10000, 1, 42, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1500, 700));
 
@@ -112,7 +112,7 @@
 
   data.push(new RackInfoConstructor(1491, "52R", 42, 483, 0, 0, -1350, 150, 0, 1, 35000, 500, 10000, 1, 42, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1500, 700));
 
-  data.push(new RackInfoConstructor(1492, "52S", 42, 483, 0, 0, -1350, -550, 0, 1, 35000, 500, 10000, 1, 42, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1500, 700));
+  data.push(new RackInfoConstructor(1492, "52S", 42, 483, 0, 0, -1350, -550, 0, 1, 35000, 500, 10000, 1, 42, 0, 0, 0, 0, 0, 0, 5700, 0, 0, 1, 1500, 700));
 
   data.push(new RackInfoConstructor(1493, "52T", 42, 483, 0, 0, -1350, -1250, 0, 1, 35000, 500, 10000, 1, 42, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1500, 700));
 
@@ -205,18 +205,78 @@
 
   scene.append("viewpoint").attr("id", "Front View").attr("centerOfRotation", "0 0 0").attr("position", "0 " + frontDistance + " 0").attr("orientation", "1.0 0.0 0.0 1.570").attr("fieldOfView", '0.95');
 
-  scene.append("viewpoint").attr("id", "Side View").attr("centerOfRotation", "0 0 0").attr("position", "" + sideDistance + " 0 0.25").attr("orientation", "0.50 0.50 0.50 2.093").attr("fieldOfView", '0.95');
+  scene.append("viewpoint").attr("id", "Left Side View").attr("centerOfRotation", "0 0 0").attr("position", "" + (-sideDistance) + " 0 0.25").attr("orientation", "-0.50 0.50 0.50 2.093").attr("fieldOfView", '0.95');
+
+  scene.append("viewpoint").attr("id", "Right Side View").attr("centerOfRotation", "0 0 0").attr("position", "" + sideDistance + " 0 0.25").attr("orientation", "0.50 0.50 0.50 2.093").attr("fieldOfView", '0.95');
 
   scene.append("viewpoint").attr("id", "Back View").attr("centerOfRotation", "0 0 0").attr("position", "0.0 " + backDistance + " -.50").attr("orientation", "0.0 0.75 0.65 3.14").attr("fieldOfView", '0.95');
 
   scene.append("viewpoint").attr("id", "Perspective").attr("centerOfRotation", "0 0 0").attr("position", "" + (backDistance / 3) + " " + (-sideDistance) + " " + (topDistance / 3)).attr("orientation", "1.0 0.25 0.25 1.25").attr("fieldOfView", '0.95');
 
-  scene.append("PointLight").attr("on", "TRUE").attr('intensity', '1.0').attr('color', '1.0 0.0 0.0').attr('attenuation', '1.0000 0.0000 0.0000').attr('location', "" + sideDistance + " 0 0").attr('radius', '200.0');
+  scene.append("PointLight").attr("on", "TRUE").attr('intensity', '.50').attr('color', '1.0 1.0 1.0').attr('attenuation', '1.0000 0.0000 0.0000').attr('location', "" + sideDistance + " 0 0").attr('radius', '200.0');
+
+  scene.append("PointLight").attr("on", "TRUE").attr('intensity', '.50').attr('color', '1.0 1.0 1.0').attr('attenuation', '1.0000 0.0000 0.0000').attr('location', "" + (-sideDistance) + " 0 0").attr('radius', '200.0');
 
   HIGH_NUM = 9007199254740992;
 
   rackDataFunc = function(data) {
     console.log("justforshure");
+  };
+
+  topThreeLeader = function(data, property, className) {
+    var dataSubset, max;
+    max = [];
+    max[0] = d3.max(data, function(d) {
+      if (typeof d[property.toString()] === "number") {
+        return d[property.toString()];
+      }
+    });
+    max[1] = d3.max(data, function(d) {
+      if (typeof d[property.toString()] === "number" && d[property.toString()] < max[0]) {
+        return d[property.toString()];
+      }
+    });
+    max[2] = d3.max(data, function(d) {
+      if (typeof d[property.toString()] === "number" && d[property.toString()] < max[1]) {
+        return d[property.toString()];
+      }
+    });
+    dataSubset = data.filter(function(d) {
+      return d[property.toString()] === max[0];
+    });
+    max[0] = max[0].toString() + (dataSubset.length > 1 ? " Racks:" : " Rack:");
+    dataSubset.forEach(function(d) {
+      return max[0] += " " + d.name;
+    });
+    max[0] += " (" + dataSubset.length + " total)";
+    dataSubset = data.filter(function(d) {
+      return d[property.toString()] === max[1];
+    });
+    max[1] = max[1].toString() + (dataSubset.length > 1 ? " Racks:" : " Rack:");
+    dataSubset.forEach(function(d) {
+      return max[1] += " " + d.name;
+    });
+    max[1] += " (" + dataSubset.length + " total)";
+    dataSubset = data.filter(function(d) {
+      return d[property.toString()] === max[2];
+    });
+    max[2] = max[2].toString() + (dataSubset.length > 1 ? " Racks:" : " Rack:");
+    dataSubset.forEach(function(d) {
+      return max[2] += " " + d.name;
+    });
+    max[2] += " (" + dataSubset.length + " total)";
+    document.getElementsByClassName(className.toString() + "1")[0].innerHTML = max[0];
+    document.getElementsByClassName(className.toString() + "2")[0].innerHTML = max[1];
+    document.getElementsByClassName(className.toString() + "3")[0].innerHTML = max[2];
+  };
+
+  topDataRacks = function(data) {
+    topThreeLeader(data, "powerCurrent", "power");
+    topThreeLeader(data, "temperatureCurrent", "temperature");
+    topThreeLeader(data, "weightCurrent", "weight");
+    topThreeLeader(data, "usedUnitsCurrent", "used-units");
+    topThreeLeader(data, "largestUnitLocation", "largest-unit-location");
+    topThreeLeader(data, "largestUnitSize", "largest-unit-size");
   };
 
   display = function(data) {
@@ -235,6 +295,7 @@
     shapesEnter.append('box').data(data).attr('size', function(d) {
       return d.floorPlanWidth + ' ' + (d.floorPlanHeight - 0.1) + ' ' + d.rackUnitHeight;
     });
+    topDataRacks(data);
   };
 
   display(data);

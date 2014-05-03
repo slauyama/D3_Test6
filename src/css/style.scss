@@ -38,6 +38,11 @@ h2 {
 	font-size: 140%;
 }
 
+h3 {
+	font-weight: 300;
+	font-size: 110%;
+}
+
 .rack-view-options {
 
 	.buttons {
@@ -75,9 +80,31 @@ x3d {
 	margin: 5px $setPixelSize;
 	border: 1px solid #000;
 	padding: $setPixelSize;
+	width: 275px;
 
 	.footNotes {
 		padding: 5% 0% 0% 0%;
 		font-size: 75%;
 	}
+
+	.leader {
+		list-style-type:decimal;
+		list-style-position:inside;
+
+		.leader-item {
+			margin: 0px 0px 0px 10px;
+			width: 270;
+			text-overflow: ellipsis;
+			overflow: hidden;
+			white-space: nowrap;
+			@include transition(11s);
+			&:hover {
+				@include transition(12s);
+				overflow: visible;
+				white-space: normal;
+			}
+		}	
+	}
 }
+
+

@@ -37,7 +37,10 @@ scene.append("viewpoint").attr("id", "Top View")
 scene.append("viewpoint").attr("id", "Front View")
    .attr( "centerOfRotation", "0 0 0").attr( "position", "0 #{frontDistance} 0" )
    .attr( "orientation", "1.0 0.0 0.0 1.570").attr( "fieldOfView", '0.95')
-scene.append("viewpoint").attr("id", "Side View")
+scene.append("viewpoint").attr("id", "Left Side View")
+   .attr( "centerOfRotation", "0 0 0").attr( "position", "#{-sideDistance} 0 0.25" )
+   .attr( "orientation", "-0.50 0.50 0.50 2.093").attr( "fieldOfView", '0.95')
+scene.append("viewpoint").attr("id", "Right Side View")
    .attr( "centerOfRotation", "0 0 0").attr( "position", "#{sideDistance} 0 0.25" )
    .attr( "orientation", "0.50 0.50 0.50 2.093").attr( "fieldOfView", '0.95')
 scene.append("viewpoint").attr("id", "Back View")
@@ -48,9 +51,13 @@ scene.append("viewpoint").attr("id", "Perspective").attr( "centerOfRotation", "0
    .attr( "orientation", "1.0 0.25 0.25 1.25").attr( "fieldOfView", '0.95')
 # Custom View Removed
 # scene.append("viewpoint").attr("id", "Custom View").attr( "centerOfRotation", "0 0 0").attr( "position", "#{-backDistance / 3} #{-sideDis} #{topDistance / 3}"  ).attr( "orientation", "1.0 -0.2 -0.1 1.25" ).attr( "fieldOfView", '0.75')
-scene.append("PointLight").attr("on", "TRUE").attr('intensity','1.0')
-   .attr('color', '1.0 0.0 0.0').attr('attenuation', '1.0000 0.0000 0.0000')
+scene.append("PointLight").attr("on", "TRUE").attr('intensity','.50')
+   .attr('color', '1.0 1.0 1.0').attr('attenuation', '1.0000 0.0000 0.0000')
    .attr('location',"#{sideDistance} 0 0").attr('radius','200.0')
+
+   scene.append("PointLight").attr("on", "TRUE").attr('intensity','.50')
+   .attr('color', '1.0 1.0 1.0').attr('attenuation', '1.0000 0.0000 0.0000')
+   .attr('location',"#{-sideDistance} 0 0").attr('radius','200.0')
 
 HIGH_NUM = 9007199254740992
 
@@ -65,6 +72,53 @@ rackDataFunc = (data) ->
    # document.getElementById('UnitSize-Data').innerHTML = data.largestUnitSize 
    # document.getElementById('PowerAD-Data').innerHTML = data.powerActualDerivation
    console.log "justforshure"
+   return
+
+topThreeLeader = (data, property, className) ->
+   max = []
+   max[0] = d3.max(data, (d) -> 
+      if typeof d[property.toString()] is "number"
+         return d[property.toString()]
+   )
+
+   max[1] = d3.max(data, (d) -> 
+      if typeof d[property.toString()] is "number" and d[property.toString()] < max[0]
+         return d[property.toString()]
+   )
+   
+   max[2] = d3.max(data, (d) -> 
+      if typeof d[property.toString()] is "number" and d[property.toString()] < max[1]
+         return d[property.toString()]
+   )
+
+   dataSubset = data.filter((d)-> d[property.toString()] is max[0])
+   max[0] = max[0].toString() + (if dataSubset.length > 1 then " Racks:" else " Rack:") 
+   dataSubset.forEach((d) -> max[0] += " " + d.name)
+   max[0] += " (#{dataSubset.length} total)"
+
+   dataSubset = data.filter((d)-> d[property.toString()] is max[1])
+   max[1] = max[1].toString() + (if dataSubset.length > 1 then " Racks:" else " Rack:") 
+   dataSubset.forEach((d) -> max[1] += " " + d.name)
+   max[1] += " (#{dataSubset.length} total)"
+
+
+   dataSubset = data.filter((d)-> d[property.toString()] is max[2])
+   max[2] = max[2].toString() + (if dataSubset.length > 1 then " Racks:" else " Rack:") 
+   dataSubset.forEach((d) -> max[2] += " " + d.name)
+   max[2] += " (#{dataSubset.length} total)"
+
+   document.getElementsByClassName(className.toString()+"1")[0].innerHTML = max[0]
+   document.getElementsByClassName(className.toString()+"2")[0].innerHTML = max[1]
+   document.getElementsByClassName(className.toString()+"3")[0].innerHTML = max[2]
+   return
+
+topDataRacks = (data) ->
+   topThreeLeader(data, "powerCurrent", "power")
+   topThreeLeader(data, "temperatureCurrent", "temperature")
+   topThreeLeader(data, "weightCurrent", "weight")
+   topThreeLeader(data, "usedUnitsCurrent", "used-units")
+   topThreeLeader(data, "largestUnitLocation", "largest-unit-location")
+   topThreeLeader(data, "largestUnitSize", "largest-unit-size")
    return
 
 display = ( data ) ->
@@ -84,6 +138,8 @@ display = ( data ) ->
 
    shapesEnter.append('box').data(data)
       .attr('size', (d) -> d.floorPlanWidth + ' ' + (d.floorPlanHeight - 0.1) + ' ' + d.rackUnitHeight)
+
+   topDataRacks(data)
 
    return
 
@@ -179,7 +235,7 @@ window.onload = ->
    cameraButton.onmouseover = toggleCamera for cameraButton in document.getElementsByClassName('camera-Option')[0].children
 
    #this will turn off movement controls
-   #document.getElementById('x3dElement').runtime.noNav()
+   # document.getElementById('x3dElement').runtime.noNav()
 
    # this will toggle the grid transparency 
    document.getElementById('gridToggle').onclick = -> 
