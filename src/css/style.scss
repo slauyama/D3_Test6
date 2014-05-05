@@ -68,40 +68,53 @@ h3 {
 }
 
 x3d { 
-	margin: 5px 0px;
+	margin: $setPixelSize;
 
 	canvas {
 		border: 1px solid black;
 	}
 }
 
-#rack-Data {
+#rack-data {
 	display: inline-block;
-	margin: 5px $setPixelSize;
+	margin: $setPixelSize;
 	border: 1px solid #000;
 	padding: $setPixelSize;
 	width: 275px;
 
-	.footNotes {
+	.footnotes {
 		padding: 5% 0% 0% 0%;
 		font-size: 75%;
 	}
 
-	.leader {
-		list-style-type:decimal;
-		list-style-position:inside;
+}
 
-		.leader-item {
-			margin: 0px 0px 0px 10px;
-			width: 270;
-			text-overflow: ellipsis;
-			overflow: hidden;
-			white-space: nowrap;
-			&:hover {
-				overflow: visible;
-				white-space: normal;
-			}
-		}	
+#leader-data {
+	margin: 5px 0px;
+	padding: $setPixelSize;
+	width: 760px;
+
+	#leader-list {
+		
+		.leader {
+			margin: $setPixelSize;
+			width: 225px;
+			float: left;
+			list-style-type:decimal;
+			list-style-position:inside;
+
+			.leader-item {
+				margin-left: $setPixelSize;
+				width: 225px;
+				text-overflow: ellipsis;
+				overflow: hidden;
+				white-space: nowrap;
+				&:hover {
+					overflow: visible;
+					white-space: normal;
+				}
+			}	
+		}
 	}
 }
 

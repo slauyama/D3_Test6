@@ -12,7 +12,7 @@ Build div for looking at top values of racks
 Put a label on every rack
 Add a filter for the racks
 Need to use more D3 management
-Add light perpendicular to Front
+Figure lighting to make better
 Want to update animation popping up of boxes
 Use the minified javascript
 Test in IE8
@@ -20,7 +20,13 @@ Test in IE8
 Bugs / Issues
 Weird modifying views. Changing the setting on the views after toggling them around for a bit
 	Cant use debounce. Need to timeout all functions
-Weird Lighting issue on one side of rack
+Need to figure out how it rearranges the leaders.
+
+5/5
+Added Lights. Add light perpendicular to Front
+	-Solved Weird Lighting issue on one side of rack
+Added side view
+Re arranged rack leaders on bottom
 
 4/30
 Figure out how to properly concat coffeescript files

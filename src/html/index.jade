@@ -14,7 +14,7 @@ html
 		div.rack-view-options.fltLeft
 			h2 Camera Options:
 			div.buttons.camera-Option
-				each view, index in["Top View", "Front View", "Left Side View", "Right Side View", "Back View", "Perspective"]
+				each view, index in["Top View", "Front View", "Left View", "Right View", "Back View", "Perspective"]
 					- var className = !index ? 'button selected-view' : 'button'
 					input.button(type="button" class=className value=view)
 			
@@ -24,14 +24,13 @@ html
 					- var className = !index ? 'button selected-color' : 'button'
 					input.button(type="button" class=className value=color)
 			
-			h2 Other Options:
 			div.formGroup
-				label(for="gridToggle") Grid:
+				label(for="gridToggle") Display Grid:
 				input.checkbox(type="checkbox" id="gridToggle"  checked="true")
 
 		div.fltClear
 		x3d#x3dElement.fltLeft
-		div#rack-Data
+		div#rack-data
 			h2 Rack Information:
 			ul.alignRight.fltLeft
 				each descriptor in ["Component ID", "Name", "Power (C/P/M)", "Temperature (C/P/M)", "Weight (C/P/M)", "Used Units (C/P)","Largest Unit Location", "Largest Unit Size", "Power Actual Derivation"]
@@ -47,10 +46,12 @@ html
 				li#UnitLocation-Data 1
 				li#UnitSize-Data 41
 				li#PowerAD-Data 115
-			p.fltClear.footNotes *C - Current, P - Planned, M - Max
+			p.fltClear.footnotes *C - Current, P - Planned, M - Max
 			br/
+
+		div#leader-data.fltLeft.fltClear
 			h2 Rack Leaders:
-			ul#leader-data
+			ul#leader-list
 				each descriptor in ["Power", "Temperature", "Weight", "Used Units","Largest Unit Location", "Largest Unit Size"]
 					ol(id="#{descriptor.replace(' ','-').toLowerCase()}-leader" class="leader")
 						h3= descriptor + ":"

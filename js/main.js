@@ -205,9 +205,9 @@
 
   scene.append("viewpoint").attr("id", "Front View").attr("centerOfRotation", "0 0 0").attr("position", "0 " + frontDistance + " 0").attr("orientation", "1.0 0.0 0.0 1.570").attr("fieldOfView", '0.95');
 
-  scene.append("viewpoint").attr("id", "Left Side View").attr("centerOfRotation", "0 0 0").attr("position", "" + (-sideDistance) + " 0 0.25").attr("orientation", "-0.50 0.50 0.50 2.093").attr("fieldOfView", '0.95');
+  scene.append("viewpoint").attr("id", "Left View").attr("centerOfRotation", "0 0 0").attr("position", "" + (-sideDistance) + " 0 0.25").attr("orientation", "-0.50 0.50 0.50 " + (2.093 * 2)).attr("fieldOfView", '0.95');
 
-  scene.append("viewpoint").attr("id", "Right Side View").attr("centerOfRotation", "0 0 0").attr("position", "" + sideDistance + " 0 0.25").attr("orientation", "0.50 0.50 0.50 2.093").attr("fieldOfView", '0.95');
+  scene.append("viewpoint").attr("id", "Right View").attr("centerOfRotation", "0 0 0").attr("position", "" + sideDistance + " 0 0.25").attr("orientation", "0.50 0.50 0.50 2.093").attr("fieldOfView", '0.95');
 
   scene.append("viewpoint").attr("id", "Back View").attr("centerOfRotation", "0 0 0").attr("position", "0.0 " + backDistance + " -.50").attr("orientation", "0.0 0.75 0.65 3.14").attr("fieldOfView", '0.95');
 
@@ -223,7 +223,7 @@
     console.log("justforshure");
   };
 
-  topThreeLeader = function(data, property, className) {
+  topThreeLeader = function(data, property, className, units) {
     var dataSubset, max;
     max = [];
     max[0] = d3.max(data, function(d) {
@@ -244,7 +244,7 @@
     dataSubset = data.filter(function(d) {
       return d[property.toString()] === max[0];
     });
-    max[0] = max[0].toString() + (dataSubset.length > 1 ? " Racks:" : " Rack:");
+    max[0] = max[0].toString() + " " + units.toString() + " rack" + (dataSubset.length > 1 ? "s:" : ":");
     dataSubset.forEach(function(d) {
       return max[0] += " " + d.name;
     });
@@ -252,7 +252,7 @@
     dataSubset = data.filter(function(d) {
       return d[property.toString()] === max[1];
     });
-    max[1] = max[1].toString() + (dataSubset.length > 1 ? " Racks:" : " Rack:");
+    max[1] = max[1].toString() + " " + units.toString() + " rack" + (dataSubset.length > 1 ? "s:" : ":");
     dataSubset.forEach(function(d) {
       return max[1] += " " + d.name;
     });
@@ -260,7 +260,7 @@
     dataSubset = data.filter(function(d) {
       return d[property.toString()] === max[2];
     });
-    max[2] = max[2].toString() + (dataSubset.length > 1 ? " Racks:" : " Rack:");
+    max[2] = max[2].toString() + " " + units.toString() + " rack" + (dataSubset.length > 1 ? "s:" : ":");
     dataSubset.forEach(function(d) {
       return max[2] += " " + d.name;
     });
@@ -271,12 +271,12 @@
   };
 
   topDataRacks = function(data) {
-    topThreeLeader(data, "powerCurrent", "power");
-    topThreeLeader(data, "temperatureCurrent", "temperature");
-    topThreeLeader(data, "weightCurrent", "weight");
-    topThreeLeader(data, "usedUnitsCurrent", "used-units");
-    topThreeLeader(data, "largestUnitLocation", "largest-unit-location");
-    topThreeLeader(data, "largestUnitSize", "largest-unit-size");
+    topThreeLeader(data, "powerCurrent", "power", "ohms");
+    topThreeLeader(data, "temperatureCurrent", "temperature", "&#186;K");
+    topThreeLeader(data, "weightCurrent", "weight", "lb");
+    topThreeLeader(data, "usedUnitsCurrent", "used-units", "used units");
+    topThreeLeader(data, "largestUnitLocation", "largest-unit-location", "units");
+    topThreeLeader(data, "largestUnitSize", "largest-unit-size", "unit size");
   };
 
   display = function(data) {

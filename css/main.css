@@ -120,28 +120,36 @@ h3 {
       background-image: -webkit-linear-gradient(bottom, #bcbcde, #9090cd); }
 
 x3d {
-  margin: 5px 0px; }
+  margin: 10px; }
   x3d canvas {
     border: 1px solid black; }
 
-#rack-Data {
+#rack-data {
   display: inline-block;
-  margin: 5px 10px;
+  margin: 10px;
   border: 1px solid #000;
   padding: 10px;
   width: 275px; }
-  #rack-Data .footNotes {
+  #rack-data .footnotes {
     padding: 5% 0% 0% 0%;
     font-size: 75%; }
-  #rack-Data .leader {
+
+#leader-data {
+  margin: 5px 0px;
+  padding: 10px;
+  width: 760px; }
+  #leader-data #leader-list .leader {
+    margin: 10px;
+    width: 225px;
+    float: left;
     list-style-type: decimal;
     list-style-position: inside; }
-    #rack-Data .leader .leader-item {
-      margin: 0px 0px 0px 10px;
-      width: 270;
+    #leader-data #leader-list .leader .leader-item {
+      margin-left: 10px;
+      width: 225px;
       text-overflow: ellipsis;
       overflow: hidden;
       white-space: nowrap; }
-      #rack-Data .leader .leader-item:hover {
+      #leader-data #leader-list .leader .leader-item:hover {
         overflow: visible;
         white-space: normal; }

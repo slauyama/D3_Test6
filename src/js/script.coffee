@@ -37,10 +37,10 @@ scene.append("viewpoint").attr("id", "Top View")
 scene.append("viewpoint").attr("id", "Front View")
    .attr( "centerOfRotation", "0 0 0").attr( "position", "0 #{frontDistance} 0" )
    .attr( "orientation", "1.0 0.0 0.0 1.570").attr( "fieldOfView", '0.95')
-scene.append("viewpoint").attr("id", "Left Side View")
+scene.append("viewpoint").attr("id", "Left View")
    .attr( "centerOfRotation", "0 0 0").attr( "position", "#{-sideDistance} 0 0.25" )
-   .attr( "orientation", "-0.50 0.50 0.50 2.093").attr( "fieldOfView", '0.95')
-scene.append("viewpoint").attr("id", "Right Side View")
+   .attr( "orientation", "-0.50 0.50 0.50 #{2.093*2}").attr( "fieldOfView", '0.95')
+scene.append("viewpoint").attr("id", "Right View")
    .attr( "centerOfRotation", "0 0 0").attr( "position", "#{sideDistance} 0 0.25" )
    .attr( "orientation", "0.50 0.50 0.50 2.093").attr( "fieldOfView", '0.95')
 scene.append("viewpoint").attr("id", "Back View")
@@ -74,7 +74,7 @@ rackDataFunc = (data) ->
    console.log "justforshure"
    return
 
-topThreeLeader = (data, property, className) ->
+topThreeLeader = (data, property, className, units) ->
    max = []
    max[0] = d3.max(data, (d) -> 
       if typeof d[property.toString()] is "number"
@@ -92,18 +92,18 @@ topThreeLeader = (data, property, className) ->
    )
 
    dataSubset = data.filter((d)-> d[property.toString()] is max[0])
-   max[0] = max[0].toString() + (if dataSubset.length > 1 then " Racks:" else " Rack:") 
+   max[0] = max[0].toString() + " " + units.toString() + " rack" + (if dataSubset.length > 1 then "s:" else ":")
    dataSubset.forEach((d) -> max[0] += " " + d.name)
    max[0] += " (#{dataSubset.length} total)"
 
    dataSubset = data.filter((d)-> d[property.toString()] is max[1])
-   max[1] = max[1].toString() + (if dataSubset.length > 1 then " Racks:" else " Rack:") 
+   max[1] = max[1].toString() + " " + units.toString() + " rack" + (if dataSubset.length > 1 then "s:" else ":")
    dataSubset.forEach((d) -> max[1] += " " + d.name)
    max[1] += " (#{dataSubset.length} total)"
 
 
    dataSubset = data.filter((d)-> d[property.toString()] is max[2])
-   max[2] = max[2].toString() + (if dataSubset.length > 1 then " Racks:" else " Rack:") 
+   max[2] = max[2].toString() + " " + units.toString() + " rack" + (if dataSubset.length > 1 then "s:" else ":")
    dataSubset.forEach((d) -> max[2] += " " + d.name)
    max[2] += " (#{dataSubset.length} total)"
 
@@ -113,12 +113,12 @@ topThreeLeader = (data, property, className) ->
    return
 
 topDataRacks = (data) ->
-   topThreeLeader(data, "powerCurrent", "power")
-   topThreeLeader(data, "temperatureCurrent", "temperature")
-   topThreeLeader(data, "weightCurrent", "weight")
-   topThreeLeader(data, "usedUnitsCurrent", "used-units")
-   topThreeLeader(data, "largestUnitLocation", "largest-unit-location")
-   topThreeLeader(data, "largestUnitSize", "largest-unit-size")
+   topThreeLeader(data, "powerCurrent", "power", "ohms")
+   topThreeLeader(data, "temperatureCurrent", "temperature", "&#186;K")
+   topThreeLeader(data, "weightCurrent", "weight", "lb")
+   topThreeLeader(data, "usedUnitsCurrent", "used-units", "used units")
+   topThreeLeader(data, "largestUnitLocation", "largest-unit-location", "units")
+   topThreeLeader(data, "largestUnitSize", "largest-unit-size", "unit size")
    return
 
 display = ( data ) ->
