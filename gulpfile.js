@@ -22,10 +22,8 @@ var htmlSrc = 'src/html/*.jade',
 /** FUNCTIONS **/ 
 
 function handleError(err) {
-	console.log("Error: " + err.toString);
-	gutil.log(err.toString);
+	console.log("Handling the Error:\n " + err.toString);
 	gutil.beep;
-	this.emit('end');
 }
 
 /** TASKS **/

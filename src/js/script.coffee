@@ -29,6 +29,10 @@ sideDistance = bounds.boundingBox.maxX + bounds.maxWidth + (bounds.boundingBox.m
 topDistance = (bounds.boundingBox.maxX - bounds.boundingBox.minY) + (bounds.boundingBox.maxY - bounds.boundingBox.minY)
 
 x3d = d3.select("#x3dElement").attr( "height", "400px" ).attr( "width", "700px" )
+zoomIn = x3d.append('button').attr('id',"zoom-in")
+document.getElementById('zoom-in').innerHTML = "Zoom In"
+zoomIn = x3d.append('button').attr('id',"zoom-out")
+document.getElementById('zoom-out').innerHTML = "Zoom Out"
 scene = x3d.append("scene")
 
 scene.append("viewpoint").attr("id", "Top View")
@@ -51,11 +55,14 @@ scene.append("viewpoint").attr("id", "Perspective").attr( "centerOfRotation", "0
    .attr( "orientation", "1.0 0.25 0.25 1.25").attr( "fieldOfView", '0.95')
 # Custom View Removed
 # scene.append("viewpoint").attr("id", "Custom View").attr( "centerOfRotation", "0 0 0").attr( "position", "#{-backDistance / 3} #{-sideDis} #{topDistance / 3}"  ).attr( "orientation", "1.0 -0.2 -0.1 1.25" ).attr( "fieldOfView", '0.75')
+
+#Right Light
 scene.append("PointLight").attr("on", "TRUE").attr('intensity','.50')
    .attr('color', '1.0 1.0 1.0').attr('attenuation', '1.0000 0.0000 0.0000')
    .attr('location',"#{sideDistance} 0 0").attr('radius','200.0')
 
-   scene.append("PointLight").attr("on", "TRUE").attr('intensity','.50')
+# Left Light
+scene.append("PointLight").attr("on", "TRUE").attr('intensity','.50')
    .attr('color', '1.0 1.0 1.0').attr('attenuation', '1.0000 0.0000 0.0000')
    .attr('location',"#{-sideDistance} 0 0").attr('radius','200.0')
 
@@ -92,18 +99,17 @@ topThreeLeader = (data, property, className, units) ->
    )
 
    dataSubset = data.filter((d)-> d[property.toString()] is max[0])
-   max[0] = max[0].toString() + " " + units.toString() + " rack" + (if dataSubset.length > 1 then "s:" else ":")
+   max[0] = max[0].toString() + units.toString() + " rack" + (if dataSubset.length > 1 then "s:" else ":")
    dataSubset.forEach((d) -> max[0] += " " + d.name)
    max[0] += " (#{dataSubset.length} total)"
 
    dataSubset = data.filter((d)-> d[property.toString()] is max[1])
-   max[1] = max[1].toString() + " " + units.toString() + " rack" + (if dataSubset.length > 1 then "s:" else ":")
+   max[1] = max[1].toString() + units.toString() + " rack" + (if dataSubset.length > 1 then "s:" else ":")
    dataSubset.forEach((d) -> max[1] += " " + d.name)
    max[1] += " (#{dataSubset.length} total)"
 
-
    dataSubset = data.filter((d)-> d[property.toString()] is max[2])
-   max[2] = max[2].toString() + " " + units.toString() + " rack" + (if dataSubset.length > 1 then "s:" else ":")
+   max[2] = max[2].toString() + units.toString() + " rack" + (if dataSubset.length > 1 then "s:" else ":")
    dataSubset.forEach((d) -> max[2] += " " + d.name)
    max[2] += " (#{dataSubset.length} total)"
 
@@ -113,12 +119,12 @@ topThreeLeader = (data, property, className, units) ->
    return
 
 topDataRacks = (data) ->
-   topThreeLeader(data, "powerCurrent", "power", "ohms")
+   topThreeLeader(data, "powerCurrent", "power", " ohms")
    topThreeLeader(data, "temperatureCurrent", "temperature", "&#186;K")
    topThreeLeader(data, "weightCurrent", "weight", "lb")
-   topThreeLeader(data, "usedUnitsCurrent", "used-units", "used units")
-   topThreeLeader(data, "largestUnitLocation", "largest-unit-location", "units")
-   topThreeLeader(data, "largestUnitSize", "largest-unit-size", "unit size")
+   topThreeLeader(data, "usedUnitsCurrent", "used-units", " used units")
+   topThreeLeader(data, "largestUnitLocation", "largest-unit-location", " units")
+   topThreeLeader(data, "largestUnitSize", "largest-unit-size", " unit size")
    return
 
 display = ( data ) ->
@@ -238,7 +244,7 @@ window.onload = ->
    # document.getElementById('x3dElement').runtime.noNav()
 
    # this will toggle the grid transparency 
-   document.getElementById('gridToggle').onclick = -> 
+   document.getElementById('grid-toggle').onclick = -> 
       if document.getElementById('gridMaterial').transparency is "1.0"
          document.getElementById('gridMaterial').transparency = ".65"
       else

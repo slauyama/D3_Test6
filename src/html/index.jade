@@ -15,18 +15,20 @@ html
 			h2 Camera Options:
 			div.buttons.camera-Option
 				each view, index in["Top View", "Front View", "Left View", "Right View", "Back View", "Perspective"]
-					- var className = !index ? 'button selected-view' : 'button'
+					- var className = !index ? ' selected-view' : ''
 					input.button(type="button" class=className value=view)
 			
 			h2 Color Options:
 			div.buttons.color-Option
 				each color, index in ["Power", "Weight", "Temperature"]
-					- var className = !index ? 'button selected-color' : 'button'
+					- var className = !index ? ' selected-color' : ''
 					input.button(type="button" class=className value=color)
 			
 			div.formGroup
-				label(for="gridToggle") Display Grid:
-				input.checkbox(type="checkbox" id="gridToggle"  checked="true")
+				label(for="grid-toggle") Display Grid:
+				input#grid-toggle.checkbox(type="checkbox" checked="true")
+				label(for="view-shuffle") Shuffle Views:
+				input#view-shuffle.checkbox(type="checkbox" checked="false")
 
 		div.fltClear
 		x3d#x3dElement.fltLeft

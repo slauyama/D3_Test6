@@ -1,6 +1,6 @@
 (function() {
   "use strict";
-  var HIGH_NUM, RackInfoConstructor, backDistance, bounds, clearAllSelected, data, display, frontDistance, gridSetup, isNumber, rackDataFunc, scene, setRackColor, sideDistance, toggleCamera, toggleColor, topDataRacks, topDistance, topThreeLeader, x3d;
+  var HIGH_NUM, RackInfoConstructor, backDistance, bounds, clearAllSelected, data, display, frontDistance, gridSetup, isNumber, rackDataFunc, scene, setRackColor, sideDistance, toggleCamera, toggleColor, topDataRacks, topDistance, topThreeLeader, x3d, zoomIn;
 
   Math.roundTo = function(num, amount) {
     if (amount == null) {
@@ -199,6 +199,14 @@
 
   x3d = d3.select("#x3dElement").attr("height", "400px").attr("width", "700px");
 
+  zoomIn = x3d.append('button').attr('id', "zoom-in");
+
+  document.getElementById('zoom-in').innerHTML = "Zoom In";
+
+  zoomIn = x3d.append('button').attr('id', "zoom-out");
+
+  document.getElementById('zoom-out').innerHTML = "Zoom Out";
+
   scene = x3d.append("scene");
 
   scene.append("viewpoint").attr("id", "Top View").attr("centerOfRotation", "0 0 0").attr("position", "0 0 " + topDistance).attr("orientation", "0.0 0.0 0.0 0.0").attr("fieldOfView", '0.75');
@@ -244,7 +252,7 @@
     dataSubset = data.filter(function(d) {
       return d[property.toString()] === max[0];
     });
-    max[0] = max[0].toString() + " " + units.toString() + " rack" + (dataSubset.length > 1 ? "s:" : ":");
+    max[0] = max[0].toString() + units.toString() + " rack" + (dataSubset.length > 1 ? "s:" : ":");
     dataSubset.forEach(function(d) {
       return max[0] += " " + d.name;
     });
@@ -252,7 +260,7 @@
     dataSubset = data.filter(function(d) {
       return d[property.toString()] === max[1];
     });
-    max[1] = max[1].toString() + " " + units.toString() + " rack" + (dataSubset.length > 1 ? "s:" : ":");
+    max[1] = max[1].toString() + units.toString() + " rack" + (dataSubset.length > 1 ? "s:" : ":");
     dataSubset.forEach(function(d) {
       return max[1] += " " + d.name;
     });
@@ -260,7 +268,7 @@
     dataSubset = data.filter(function(d) {
       return d[property.toString()] === max[2];
     });
-    max[2] = max[2].toString() + " " + units.toString() + " rack" + (dataSubset.length > 1 ? "s:" : ":");
+    max[2] = max[2].toString() + units.toString() + " rack" + (dataSubset.length > 1 ? "s:" : ":");
     dataSubset.forEach(function(d) {
       return max[2] += " " + d.name;
     });
@@ -271,12 +279,12 @@
   };
 
   topDataRacks = function(data) {
-    topThreeLeader(data, "powerCurrent", "power", "ohms");
+    topThreeLeader(data, "powerCurrent", "power", " ohms");
     topThreeLeader(data, "temperatureCurrent", "temperature", "&#186;K");
     topThreeLeader(data, "weightCurrent", "weight", "lb");
-    topThreeLeader(data, "usedUnitsCurrent", "used-units", "used units");
-    topThreeLeader(data, "largestUnitLocation", "largest-unit-location", "units");
-    topThreeLeader(data, "largestUnitSize", "largest-unit-size", "unit size");
+    topThreeLeader(data, "usedUnitsCurrent", "used-units", " used units");
+    topThreeLeader(data, "largestUnitLocation", "largest-unit-location", " units");
+    topThreeLeader(data, "largestUnitSize", "largest-unit-size", " unit size");
   };
 
   display = function(data) {
@@ -398,7 +406,7 @@
       cameraButton = _ref1[_j];
       cameraButton.onmouseover = toggleCamera;
     }
-    document.getElementById('gridToggle').onclick = function() {
+    document.getElementById('grid-toggle').onclick = function() {
       if (document.getElementById('gridMaterial').transparency === "1.0") {
         document.getElementById('gridMaterial').transparency = ".65";
       } else {

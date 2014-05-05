@@ -92,20 +92,6 @@ h3 {
       background-image: -ms-linear-gradient(bottom, #efefef, #dedede);
       background-image: -moz-linear-gradient(bottom, #efefef, #dedede);
       background-image: -webkit-linear-gradient(bottom, #efefef, #dedede); }
-  .rack-view-options .buttons .checkbox {
-    vertical-align: middle;
-    display: inline-block;
-    background-image: linear-gradient(to bottom, #dedede, #efefef);
-    background-image: -o-linear-gradient(bottom, #dedede, #efefef);
-    background-image: -ms-linear-gradient(bottom, #dedede, #efefef);
-    background-image: -moz-linear-gradient(bottom, #dedede, #efefef);
-    background-image: -webkit-linear-gradient(bottom, #dedede, #efefef); }
-    .rack-view-options .buttons .checkbox:hover {
-      background-image: linear-gradient(to bottom, #efefef, #dedede);
-      background-image: -o-linear-gradient(bottom, #efefef, #dedede);
-      background-image: -ms-linear-gradient(bottom, #efefef, #dedede);
-      background-image: -moz-linear-gradient(bottom, #efefef, #dedede);
-      background-image: -webkit-linear-gradient(bottom, #efefef, #dedede); }
   .rack-view-options .buttons .selected-view, .rack-view-options .buttons .selected-color {
     background-image: linear-gradient(to bottom, #9090cd, #bcbcde);
     background-image: -o-linear-gradient(bottom, #9090cd, #bcbcde);
@@ -118,11 +104,42 @@ h3 {
       background-image: -ms-linear-gradient(bottom, #bcbcde, #9090cd);
       background-image: -moz-linear-gradient(bottom, #bcbcde, #9090cd);
       background-image: -webkit-linear-gradient(bottom, #bcbcde, #9090cd); }
+.rack-view-options .checkbox {
+  vertical-align: baseline;
+  display: inline-block;
+  background-image: linear-gradient(to bottom, #dedede, #efefef);
+  background-image: -o-linear-gradient(bottom, #dedede, #efefef);
+  background-image: -ms-linear-gradient(bottom, #dedede, #efefef);
+  background-image: -moz-linear-gradient(bottom, #dedede, #efefef);
+  background-image: -webkit-linear-gradient(bottom, #dedede, #efefef); }
+  .rack-view-options .checkbox:hover {
+    background-image: linear-gradient(to bottom, #efefef, #dedede);
+    background-image: -o-linear-gradient(bottom, #efefef, #dedede);
+    background-image: -ms-linear-gradient(bottom, #efefef, #dedede);
+    background-image: -moz-linear-gradient(bottom, #efefef, #dedede);
+    background-image: -webkit-linear-gradient(bottom, #efefef, #dedede); }
 
 x3d {
+  position: relative;
   margin: 10px; }
   x3d canvas {
     border: 1px solid black; }
+  x3d button {
+    position: absolute;
+    z-index: 1;
+    width: 70px;
+    height: 20px;
+    border: none;
+    background-color: #f9f9f9;
+    color: #202021; }
+    x3d button#zoom-in {
+      top: 1px;
+      left: 1px; }
+    x3d button#zoom-out {
+      top: 21px;
+      left: 1px; }
+    x3d button:hover {
+      background-color: #e5e5e5; }
 
 #rack-data {
   display: inline-block;
