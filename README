@@ -15,6 +15,7 @@ GulpFile
 	Live Reload
 	Gulp-change / cache / newer / remember
 Put a text/label on every rack
+	view-source:http://x3dom.org/x3dom/example/x3dom_text.html
 Add a filter for the racks
 Interactive buttons within the cavnas
 	http://www.x3dom.org/?page_id=1483
