@@ -12,6 +12,7 @@ var clean = require('gulp-clean'),
 	notify = require('gulp-notify'),
 	rename = require('gulp-rename'),
 	sass = require('gulp-ruby-sass'),
+	plumber = require('gulp-plumber'),
 	uglify = require('gulp-uglify'); 
 
 // Input File Paths
@@ -21,10 +22,11 @@ var htmlSrc = 'src/html/*.jade',
 
 /** FUNCTIONS **/ 
 
-function handleError(err) {
-	console.log("Handling the Error:\n " + err.toString);
+var onError = function (err) {
 	gutil.beep;
-}
+	console.log("Handling the Error:\n " + err.toString);
+	// this.emit('end');
+};
 
 /** TASKS **/
 
@@ -36,8 +38,8 @@ gulp.task('default', function() {
 //CSS
 gulp.task('sass', function() {
 	return gulp.src('src/css/main.scss')
+		.pipe(plumber())
 		.pipe(sass({noCache: true}))
-			.on('error', handleError)
 	    .pipe(gulp.dest('css/'))
 	    .pipe(rename({suffix: '.min'}))
 	    .pipe(minifycss())
@@ -49,8 +51,8 @@ gulp.task('sass', function() {
 gulp.task('coffee', function() {
   	return gulp.src(['src/js/lib.coffee', jsSrc])
 		.pipe(concat('main.js'))
+		.pipe(plumber())
 		.pipe(coffee())
-			.on('error', handleError)
 		.pipe(jshint())
 		.pipe(jshint.reporter('default'))
     	.pipe(gulp.dest('js/'))
@@ -69,16 +71,16 @@ gulp.task('jade', function() {
 // Hack for creating uglify and beautify html
 gulp.task('jadePretty', function() {
 	return gulp.src(htmlSrc)
+		.pipe(plumber())
 		.pipe(jade({pretty:true}))
-			.on('error', handleError)
     	.pipe(gulp.dest(''))
     	.pipe(notify({ message: 'Jade Pretty complete' }));
 });
 
 gulp.task('jadeUgly', function() {
 	return gulp.src(htmlSrc)
+		.pipe(plumber())
 		.pipe(jade({pretty:false}))
-			.on('error', handleError)
     	.pipe(rename({ suffix: '.min' }))
     	.pipe(gulp.dest(''))
     	.pipe(notify({ message: 'Jade Ugly complete' }));

@@ -13,22 +13,22 @@ html
 		- var iterator = 0
 		div.rack-view-options.fltLeft
 			h2 Camera Options:
-			div.buttons.camera-Option
+			div.buttons.camera-option
 				each view, index in["Top View", "Front View", "Left View", "Right View", "Back View", "Perspective"]
 					- var className = !index ? ' selected-view' : ''
-					input.button(type="button" class=className value=view)
+					input.button(type="button", class="view"+index, class=className,  value=view)
 			
 			h2 Color Options:
-			div.buttons.color-Option
+			div.buttons.color-option
 				each color, index in ["Power", "Weight", "Temperature"]
 					- var className = !index ? ' selected-color' : ''
 					input.button(type="button" class=className value=color)
 			
 			div.formGroup
 				label(for="grid-toggle") Display Grid:
-				input#grid-toggle.checkbox(type="checkbox" checked="true")
+				input#grid-toggle.checkbox(type="checkbox" checked=true)
 				label(for="view-shuffle") Shuffle Views:
-				input#view-shuffle.checkbox(type="checkbox" checked="false")
+				input#view-shuffle.checkbox(type="checkbox" checked=false)
 
 		div.fltClear
 		x3d#x3dElement.fltLeft
@@ -58,6 +58,6 @@ html
 					ol(id="#{descriptor.replace(' ','-').toLowerCase()}-leader" class="leader")
 						h3= descriptor + ":"
 						each index in [1,2,3]
-							li(class="leader-item #{descriptor.replace(/\s/g,'-').toLowerCase()+index}") rack something
+							li(class="leader-item #{descriptor.replace(/\s/g,'-').toLowerCase()+index}") N/A
 
 		script(src="js/main.js")

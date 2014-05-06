@@ -8,8 +8,8 @@ sass - http://sass-lang.com/
 jade - http://jade-lang.com/
 
 To Do
-Hover over data racks Tool tips view-source:http://www.x3dom.org/x3dom/test/functional/indexedLineSet.html
-
+Hover over data racks Tool tips 
+	http://www.x3dom.org/x3dom/test/functional/indexedLineSet.html
 Use JSON or CSV as opposed to raw data (consider building conversion for larger sets of data)
 GulpFile
 	Live Reload
@@ -17,6 +17,7 @@ GulpFile
 Put a text/label on every rack
 Add a filter for the racks
 Interactive buttons within the cavnas
+	http://www.x3dom.org/?page_id=1483
 Need to use more D3 management
 Figure lighting to make better
 Want to update animation popping up of boxes
@@ -29,6 +30,7 @@ Weird modifying views. Changing the setting on the views after toggling them aro
 Need to figure out how it rearranges the leaders.
 
 5/5
+Implemented a shuffle mode
 Added Lights. Add light perpendicular to Front
 	-Solved Weird Lighting issue on one side of rack
 Added side view

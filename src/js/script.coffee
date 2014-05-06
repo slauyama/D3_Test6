@@ -127,6 +127,12 @@ topDataRacks = (data) ->
    topThreeLeader(data, "largestUnitSize", "largest-unit-size", " unit size")
    return
 
+clearAllSelected = (str)->
+   allSelected = document.getElementsByClassName(str)
+   while (allSelected.length)
+      allSelected[0].className = allSelected[0].className.replace(str,'')
+   return
+
 display = ( data ) ->
    transforms = scene.selectAll('transform').data(data)
 
@@ -148,8 +154,6 @@ display = ( data ) ->
    topDataRacks(data)
 
    return
-
-display data
 
 setInterval (-> display data), 10000
 
@@ -188,13 +192,7 @@ toggleCamera = ->
 toggleColor = ->
    clearAllSelected('selected-color')
    @className += " selected-color"
-   display data
-
-clearAllSelected = (str)->
-   allSelected = document.getElementsByClassName(str)
-   while (allSelected.length)
-      allSelected[0].className = "button"
-   return
+   display(data)
 
 gridSetup = (bounds)->
    # Attach a shape to the scene
@@ -235,13 +233,32 @@ gridSetup = (bounds)->
 # setup the grid
 gridSetup(bounds)
 
+shuffleView = ->
+   initialNumber = document.getElementsByClassName('selected-view')[0].className
+      .replace('button','').replace('selected-view','').replace('view','').replace(/\s/,'')
+
+   if parseInt(initialNumber) < document.getElementsByClassName('camera-option')[0].children.length - 1 
+      selectedNumber = parseInt(initialNumber) + 1 
+   else 
+      selectedNumber = 0
+
+   newView = document.getElementsByClassName("#{'view'+selectedNumber.toString()}")[0]
+   clearAllSelected('selected-view')
+   newView.className += " selected-view"
+   document.getElementById(newView.value).setAttribute('set_bind','true')
+  
+   display(data)
+   return
+
 window.onload = -> 
    #options setup. Initializes the button to proper function
-   colorButton.onmouseover = toggleColor for colorButton in document.getElementsByClassName('color-Option')[0].children
-   cameraButton.onmouseover = toggleCamera for cameraButton in document.getElementsByClassName('camera-Option')[0].children
+   colorButton.onmouseover = toggleColor for colorButton in document.getElementsByClassName('color-option')[0].children
+   cameraButton.onmouseover = toggleCamera for cameraButton in document.getElementsByClassName('camera-option')[0].children
 
    #this will turn off movement controls
    # document.getElementById('x3dElement').runtime.noNav()
+
+   display(data)
 
    # this will toggle the grid transparency 
    document.getElementById('grid-toggle').onclick = -> 
@@ -250,4 +267,12 @@ window.onload = ->
       else
          document.getElementById('gridMaterial').transparency = "1.0"
       return
+
+   document.getElementById('view-shuffle').onclick = ->
+      if document.getElementById('view-shuffle').checked is true
+         shuffleID = setInterval (-> shuffleView()), 10000
+      else
+         window.clearInterval(shuffleID)
+      return 
+
    return

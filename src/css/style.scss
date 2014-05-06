@@ -90,20 +90,20 @@ x3d {
 		position: absolute;
 	    z-index: 1;
 	    width: 70px;
-	    height: 20px;
+	    height: 24px;
 	    border: none;
-	    background-color: $grey-top + 10;
+	    background-color: #fff;
 	    color: #202021;
 	    &#zoom-in {
 	    	top: 1px;
 	    	left: 1px;
 	    }
 	    &#zoom-out {
-	    	top: 21px;
+	    	top: 25px;
 	    	left: 1px;
 	    }
 	    &:hover {
-	    	background-color: $grey-top - 10;
+	    	background-color: #fff - 20;
 	    }
 
 	}

@@ -1,6 +1,6 @@
 (function() {
   "use strict";
-  var HIGH_NUM, RackInfoConstructor, backDistance, bounds, clearAllSelected, data, display, frontDistance, gridSetup, isNumber, rackDataFunc, scene, setRackColor, sideDistance, toggleCamera, toggleColor, topDataRacks, topDistance, topThreeLeader, x3d, zoomIn;
+  var HIGH_NUM, RackInfoConstructor, backDistance, bounds, clearAllSelected, data, display, frontDistance, gridSetup, isNumber, rackDataFunc, scene, setRackColor, shuffleView, sideDistance, toggleCamera, toggleColor, topDataRacks, topDistance, topThreeLeader, x3d, zoomIn;
 
   Math.roundTo = function(num, amount) {
     if (amount == null) {
@@ -287,6 +287,14 @@
     topThreeLeader(data, "largestUnitSize", "largest-unit-size", " unit size");
   };
 
+  clearAllSelected = function(str) {
+    var allSelected;
+    allSelected = document.getElementsByClassName(str);
+    while (allSelected.length) {
+      allSelected[0].className = allSelected[0].className.replace(str, '');
+    }
+  };
+
   display = function(data) {
     var shapesEnter, transforms;
     transforms = scene.selectAll('transform').data(data);
@@ -305,8 +313,6 @@
     });
     topDataRacks(data);
   };
-
-  display(data);
 
   setInterval((function() {
     return display(data);
@@ -355,14 +361,6 @@
     return display(data);
   };
 
-  clearAllSelected = function(str) {
-    var allSelected;
-    allSelected = document.getElementsByClassName(str);
-    while (allSelected.length) {
-      allSelected[0].className = "button";
-    }
-  };
-
   gridSetup = function(bounds) {
     var coordinateString, gridHeightEnd, gridHeightStart, gridStart, gridWidthEnd, gridWidthStart, lineString, lineset, set, shape;
     shape = scene.append('Transform').append('Shape').attr('id', 'grid');
@@ -394,23 +392,49 @@
 
   gridSetup(bounds);
 
+  shuffleView = function() {
+    var initialNumber, newView, selectedNumber;
+    initialNumber = document.getElementsByClassName('selected-view')[0].className.replace('button', '').replace('selected-view', '').replace('view', '').replace(/\s/, '');
+    if (parseInt(initialNumber) < document.getElementsByClassName('camera-option')[0].children.length - 1) {
+      selectedNumber = parseInt(initialNumber) + 1;
+    } else {
+      selectedNumber = 0;
+    }
+    newView = document.getElementsByClassName("" + ('view' + selectedNumber.toString()))[0];
+    clearAllSelected('selected-view');
+    newView.className += " selected-view";
+    document.getElementById(newView.value).setAttribute('set_bind', 'true');
+    display(data);
+  };
+
   window.onload = function() {
     var cameraButton, colorButton, _i, _j, _len, _len1, _ref, _ref1;
-    _ref = document.getElementsByClassName('color-Option')[0].children;
+    _ref = document.getElementsByClassName('color-option')[0].children;
     for (_i = 0, _len = _ref.length; _i < _len; _i++) {
       colorButton = _ref[_i];
       colorButton.onmouseover = toggleColor;
     }
-    _ref1 = document.getElementsByClassName('camera-Option')[0].children;
+    _ref1 = document.getElementsByClassName('camera-option')[0].children;
     for (_j = 0, _len1 = _ref1.length; _j < _len1; _j++) {
       cameraButton = _ref1[_j];
       cameraButton.onmouseover = toggleCamera;
     }
+    display(data);
     document.getElementById('grid-toggle').onclick = function() {
       if (document.getElementById('gridMaterial').transparency === "1.0") {
         document.getElementById('gridMaterial').transparency = ".65";
       } else {
         document.getElementById('gridMaterial').transparency = "1.0";
+      }
+    };
+    document.getElementById('view-shuffle').onclick = function() {
+      var shuffleID;
+      if (document.getElementById('view-shuffle').checked === true) {
+        shuffleID = setInterval((function() {
+          return shuffleView();
+        }), 10000);
+      } else {
+        window.clearInterval(shuffleID);
       }
     };
   };
