@@ -126,10 +126,7 @@ data.push(new RackInfoConstructor(1507, "53S", 42, 483, 0, 0, -4150, -1250, 0, 1
 data.push(new RackInfoConstructor(1508, "53T", 42, 483, 0, 0, -4150, -1950, 0, 1, 35000, 500, 10000, 1,  30, 12, 0, 0,     0,   0,     0, 0,     0, 0,    1, 1500, 700))
 data.push(new RackInfoConstructor(1509, "53U", 42, 483, 0, 0, -4150, -2650, 0, 1, 35000, 500, 10000, 1,  32, 10, 0, 0,     0,   0,     0, 0,     0, 0,    1, 1500, 700))
 
-
-console.log data.length
 data = data.filter((d) -> 
    d.name.indexOf("Tile") is -1 && isNumber(d.xPosition) && isNumber(d.yPosition) && 
    isNumber(d.floorPlanWidth) && isNumber(d.floorPlanHeight)
 )
-console.log data.length
